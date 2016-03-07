@@ -110,9 +110,7 @@ public class StartCollaborationHandler implements IHandler {
 		  
 		  CollabUserActivity userObject = new CollabUserActivity();
 		
-		  activePage.getActiveEditor().isDirty();
-		  System.out.println(" Dirty:: "+activePage.getActiveEditor().isDirty());
-		  
+		 
 		  for (int i = 0; i < 100; i++)  {
 		      try {
 		   
@@ -126,6 +124,8 @@ public class StartCollaborationHandler implements IHandler {
 					System.out.println("MethodName from activityMethodNameData:: "+methodName);
 					userObject.setCurrentAST(methodName);
 					userObject.setEditFile(getAllFiles());
+					
+					 				  
 					
 				/*	userObject.setCurrentFile("first.java");
 					userObject.setCurrentLine(0);
@@ -272,7 +272,8 @@ public int getCursorPosition()
 public String getCurrentMethod()
 		{
 		IEditorPart activeEditor  = activePage.getActiveEditor();
-
+    //    activePage.getActiveEditor().isDirty();
+	//	System.out.println(" Dirty:: "+activePage.getActiveEditor().isDirty());
 		if(activeEditor instanceof JavaEditor) {
 		    
 			ICompilationUnit root = (ICompilationUnit) EditorUtility.getEditorInputJavaElement(activeEditor, false);
@@ -284,7 +285,7 @@ public String getCurrentMethod()
 		        if (element !=null)
 		        {
 			        if(element.getElementType() == IJavaElement.METHOD){
-			            return element.getElementName();
+			            return element.getElementName();			            			 
 			        }
 		        }
 		    } catch (JavaModelException e) {
