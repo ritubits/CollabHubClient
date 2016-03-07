@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="fileMenu"
+               label="CollabHub"
+               tooltip="Welcome to CollaborationHub">
+            <menu
+                  label="Admin">
+               <command
+                     commandId="CollabHubClient.commands.RegisterProject"
+                     label="RegisterProject"
+                     style="push">
+               </command>
+               <command
+                     commandId="CollabHubClient.commands.DeRegisterProject"
+                     label="DeRegisterProject"
+                     style="push">
+               </command>
+            </menu>
+            <menu
+                  label="Collaborator">
+               <command
+                     commandId="CollabHubClient.commands.StartCollaboration"
+                     label="Connect to CollabHub"
+                     style="push">
+               </command>
+               <command
+                     commandId="CollabHubClient.commands.StopCollaboration"
+                     label="Disconnect from CollabHub"
+                     style="push">
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="collabhubclient.commands.RegisterProjectHandler"
+            id="CollabHubClient.commands.RegisterProject"
+            name="RegisterProject">
+      </command>
+      <command
+            defaultHandler="collabhubclient.commands.DeRegisterProjectHandler"
+            id="CollabHubClient.commands.DeRegisterProject"
+            name="DeRegisterProject">
+      </command>
+      <command
+            defaultHandler="collabhubclient.commands.StartCollaborationHandler"
+            id="CollabHubClient.commands.StartCollaboration"
+            name="Connect to CollabHub">
+      </command>
+      <command
+            defaultHandler="collabhubclient.commands.StopCollaborationHandler"
+            id="CollabHubClient.commands.StopCollaboration"
+            name="Disconnect from CollabHub">
+      </command>
+   </extension>
+
+</plugin>
