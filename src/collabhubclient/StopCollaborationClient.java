@@ -49,7 +49,7 @@ public class StopCollaborationClient {
 			
 	    //  System.out.println("http://"+ipAddTomcat+"/examples/servlets/servlet/RegisterProjectServlet?pName="+projectName+"&cName="+collabName+"&ipAddT="+ipAddTomcat+"&ipAddSQL="+ipAddMySQL);
 	    	
-	    	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/examples/servlets/servlet/StopCollaborationServlet?pName="+projectName+"&cName="+collabName+"&ipAddT="+ipAddTomcat+"&ipAddSQL="+ipAddMySQL);
+	    	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/StopCollaborationServlet?pName="+projectName+"&cName="+collabName);
 	    	
 	    	CloseableHttpResponse response = collabClient.execute(httpget);
 	    	  		
