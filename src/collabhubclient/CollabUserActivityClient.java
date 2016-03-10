@@ -45,8 +45,8 @@ public class CollabUserActivityClient {
 	    String ipAddS = StartCollaborationClient.getipAddMySQL();
 	    String collabName = StartCollaborationClient.getCollabName();
 	  
-	    	HttpGet httpget = new HttpGet("http://"+ipAddT+"/examples/servlets/servlet/UserActivityServlet?&ipAddSQL="+ipAddS+"&cName="+collabName+"&"+send);
-	    	System.out.println("Invoking Servlet:: "+"http://"+ipAddT+"/examples/servlets/servlet/UserActivityServlet?&ipAddSQL="+ipAddS+"&cName="+collabName+"&"+send);
+	    	HttpGet httpget = new HttpGet("http://"+ipAddT+"/collabserver/UserActivityServlet?&cName="+collabName+"&"+send);
+	    	System.out.println("Invoking Servlet:: "+"http://"+ipAddT+"/collabserver/UserActivityServlet?&cName="+collabName+"&"+send);
 	    	CloseableHttpResponse response = httpclient.execute(httpget);
 	    	  		
 	    	System.out.println(response.getProtocolVersion());
