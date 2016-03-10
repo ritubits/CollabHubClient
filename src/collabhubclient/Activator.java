@@ -1,5 +1,6 @@
 package collabhubclient;
 
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -25,6 +26,8 @@ public class Activator extends AbstractUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
+		
+		PlatformUI.getWorkbench().getDecoratorManager().setEnabled("DecorationProject.myDecorator", false);
 		super.start(context);
 		plugin = this;
 	}
