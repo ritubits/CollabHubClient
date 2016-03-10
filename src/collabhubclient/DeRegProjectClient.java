@@ -33,8 +33,8 @@ public class DeRegProjectClient {
 	  	httpclient = HttpClients.createDefault();
 	    System.out.println("After creating client: DeregProject");
 	    
-	        System.out.println("http://"+ipAddTomcat+"/examples/servlets/servlet/RegisterProjectServlet?pName="+projectName+"&oName="+ownerName+"&ipAddT="+ipAddTomcat+"&ipAddSQL="+ipAddMySQL);
-	    	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/examples/servlets/servlet/DeRegisterProjectServlet?pName="+projectName+"&oName="+ownerName+"&ipAddT="+ipAddTomcat+"&ipAddSQL="+ipAddMySQL);
+	        System.out.println("Invoking Sevlet DeRegister"+"http://"+ipAddTomcat+"/collabserver/DeRegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
+	    	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/DeRegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
 	    	
 	    	CloseableHttpResponse response = httpclient.execute(httpget);
 	    	  		
