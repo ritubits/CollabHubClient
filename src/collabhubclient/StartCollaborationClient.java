@@ -1,14 +1,10 @@
 package collabhubclient;
 
-import java.util.Enumeration;
-import java.util.Vector;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 
 public class StartCollaborationClient {
 	
@@ -79,9 +75,9 @@ public class StartCollaborationClient {
 		
 		  
 	    
-	      System.out.println("http://"+ipAddTomcat+"/examples/servlets/servlet/RegisterProjectServlet?pName="+projectName+"&cName="+collabName+"&ipAddT="+ipAddTomcat+"&ipAddSQL="+ipAddMySQL);
+	      System.out.println("Invoking Servlet StartCollaboration"+"http://"+ipAddTomcat+"/collabserver/StartCollaborationServlet?pName="+projectName+"&cName="+collabName);
 	    
-	    	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/examples/servlets/servlet/StartCollaborationServlet?pName="+projectName+"&cName="+collabName+"&ipAddT="+ipAddTomcat+"&ipAddSQL="+ipAddMySQL);
+	    	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/StartCollaborationServlet?pName="+projectName+"&cName="+collabName);
 	    	
 	    	CloseableHttpResponse response = httpclient.execute(httpget);
 	    	  		
