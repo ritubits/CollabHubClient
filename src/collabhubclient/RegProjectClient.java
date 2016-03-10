@@ -36,9 +36,8 @@ public class RegProjectClient {
 	  	httpclient = HttpClients.createDefault();
 	    System.out.println("After creating client: regProject");
 	    
-	      System.out.println("http://"+ipAddTomcat+"/examples/servlets/servlet/RegisterProjectServlet?pName="+projectName+"&oName="+ownerName+"&ipAddT="+ipAddTomcat+"&ipAddSQL="+ipAddMySQL);
-	    	//HttpGet httpget = new HttpGet("http://localhost:8080/examples/servlets/servlet/RegisterProjectServlet?pName="+projectName+"&oName="+ownerName+"&ipAdd="+ipAdd);
-	    	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/examples/servlets/servlet/RegisterProjectServlet?pName="+projectName+"&oName="+ownerName+"&ipAddT="+ipAddTomcat+"&ipAddSQL="+ipAddMySQL);
+	      System.out.println("Invoking Servlet RegisterProject"+"http://"+ipAddTomcat+"/collabserver/RegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
+	       	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/RegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
 	    	
 	    	CloseableHttpResponse response = httpclient.execute(httpget);
 	    	  		
