@@ -12,17 +12,19 @@ import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.decorators.DecoratorManager;
 import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 
 import collabhubclient.CollabUserActivity;
 import collabhubclient.CollabUserActivityClient;
 import collabhubclient.StartCollaborationForm;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -30,7 +32,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.javaeditor.EditorUtility;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaEditor;
-//import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
@@ -49,7 +50,7 @@ public class StartCollaborationHandler implements IHandler {
 	String methodName=null;
 	int lineNo;
 	static CollabUserActivityClient userClient;
-
+	static ExecutionEvent eventObject;
 	public void addHandlerListener(IHandlerListener handlerListener) {
 		// TODO Auto-generated method stub
 
@@ -66,6 +67,7 @@ public class StartCollaborationHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// TODO Auto-generated method stub
 
+		eventObject= event;
 		System.out.println("In StartCollaboration handler");
 		StartCollaborationForm eForm= new StartCollaborationForm();
 		success= eForm.executeForm();
@@ -80,14 +82,23 @@ public class StartCollaborationHandler implements IHandler {
 		}
 		
 		//		reaches here when collabStarted
-		
+		try {
+			PlatformUI.getWorkbench().getDecoratorManager().setEnabled("DecorationProject.myDecorator", true);
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("collabStarted outside Handlers:: "+success);
 		userClient = new CollabUserActivityClient();
 		  
 		workbench = PlatformUI.getWorkbench();
+	//	workbench.
 		activePage = workbench.getActiveWorkbenchWindow().getActivePage();
 
-	  
+		if (activePage.CHANGE_EDITOR_CLOSE != null)
+		{
+			
+		}
 		  Job job = new Job("Activity Job") {
 	
 		      protected IStatus run(IProgressMonitor monitor) {
@@ -109,15 +120,20 @@ public class StartCollaborationHandler implements IHandler {
 	  private void getUserActivityData() {
 		  
 		  CollabUserActivity userObject = new CollabUserActivity();
-		
-		 
-		  for (int i = 0; i < 100; i++)  {
+
+		  while (true)
+		  {
 		      try {
-		   
-		        Thread.sleep(1000*5);// pick activity data info every second
+		    	if (activePage.getActiveEditor().isDirty())
+		    	{
+			    	System.out.println(" Dirty:: "+activePage.getActiveEditor().isDirty());
+		    		sendCurrentArtifact(getCurrentFileName());
+		    	}
+
+		        Thread.sleep(1000*5);// pick activity data info every 5 second
 		        
-												
-				userObject.setCurrentFile(getCurrentFileName());
+		        											
+					userObject.setCurrentFile(getCurrentFileName());
 					activityLineData();
 					userObject.setCurrentLine(lineNo);
 					activityMethodNameData();
@@ -125,14 +141,7 @@ public class StartCollaborationHandler implements IHandler {
 					userObject.setCurrentAST(methodName);
 					userObject.setEditFile(getAllFiles());
 					
-					 				  
-					
-				/*	userObject.setCurrentFile("first.java");
-					userObject.setCurrentLine(0);
-					userObject.setCurrentAST("set");
-					userObject.setEditFile(getAllFiles());*/
-					
-							Boolean exist= userClient.getCollabClient();
+					Boolean exist= userClient.getCollabClient();
 					System.out.println("Exist:: "+exist);
 					if (exist) 
 						{
@@ -174,6 +183,7 @@ public class StartCollaborationHandler implements IHandler {
 					//	System.out.println("Cursor::"+ getCursorPosition());
 						methodName= getCurrentMethod();
 						System.out.println("MethodName in activityMethodNameData:: "+methodName);
+						PlatformUI.getWorkbench().getDecoratorManager().update("DecorationProject.myDecorator");
 						return Status.OK_STATUS;
 					}
 				};
@@ -207,8 +217,7 @@ public String getCurrentFileName() throws FileNotFoundException
 			try{
 				if (activePage !=null)
 				  name = activePage.getActiveEditor().getEditorInput().getName();
-				
-		    System.out.println("CurrentFileName:: "+name);
+					    System.out.println("CurrentFileName:: "+name);
 
 			} catch(Exception e)
 			{
@@ -232,10 +241,7 @@ public Vector getAllFiles() throws FileNotFoundException
 			  {
 			    System.out.println("All files:: "+name[j].getName());
 			    fileNames.add(name[j].getName());
-			  }
-			//  fileNames.add("four.java");
-			//  fileNames.add("second.java");
-			  			  
+			  }		  			  
 			} catch(Exception e)
 			{
 				e.printStackTrace();
@@ -272,8 +278,7 @@ public int getCursorPosition()
 public String getCurrentMethod()
 		{
 		IEditorPart activeEditor  = activePage.getActiveEditor();
-    //    activePage.getActiveEditor().isDirty();
-	//	System.out.println(" Dirty:: "+activePage.getActiveEditor().isDirty());
+
 		if(activeEditor instanceof JavaEditor) {
 		    
 			ICompilationUnit root = (ICompilationUnit) EditorUtility.getEditorInputJavaElement(activeEditor, false);
@@ -286,7 +291,7 @@ public String getCurrentMethod()
 		        {
 			        if(element.getElementType() == IJavaElement.METHOD){
 			            return element.getElementName();			            			 
-			        }
+			        }			        
 		        }
 		    } catch (JavaModelException e) {
 		        e.printStackTrace();
@@ -294,6 +299,25 @@ public String getCurrentMethod()
 		}
 		return null;
 	}
+
+ public void sendCurrentArtifact(String currentFileName)
+ {
+	 System.out.println("Sending Artifact Graph");
+	 IAdaptable editorPart = null;
+	 ITextEditor editor = (ITextEditor) editorPart.getAdapter(ITextEditor.class);
+		 if (editor != null) {
+		   IDocumentProvider provider = editor.getDocumentProvider();
+		   IDocument document = provider.getDocument(editor.getEditorInput());
+		   
+		   IFile file = (IFile) ((IEditorPart) editorPart).getEditorInput().getAdapter(IFile.class);
+		   if (file != null) {
+		       // do stuff
+			 //  file.
+		   }
+	//	   document.
+		 }
+ }
+
 		@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
