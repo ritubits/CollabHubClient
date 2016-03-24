@@ -62,5 +62,27 @@
             name="Disconnect from CollabHub">
       </command>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="collabhubclient.DirectCollaboratorsViewPart"
+            id="CollabHubClient.DirectCollaboratorsView"
+            name="DirectCollaborators"
+            restorable="true">
+      </view>
+      <view
+            class="collabhubclient.SemiDirectCollaboratorsViewPart"
+            id="CollabHubClient.SemiDirectCollaboratorsView"
+            name="SemiDirectCollaborators"
+            restorable="true">
+      </view>
+      <view
+            class="collabhubclient.IndirectCollaboratorsViewPart"
+            id="CollabHubClient.IndirectCollaboratorsView"
+            name="IndirectCollaborators"
+            restorable="true">
+      </view>
+   </extension>
 
 </plugin>
