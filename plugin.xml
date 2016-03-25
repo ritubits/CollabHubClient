@@ -83,6 +83,12 @@
             name="IndirectCollaborators"
             restorable="true">
       </view>
+      <view
+            class="collabhubclient.ConflictMessagesView"
+            id="CollabHubClient.ConflictMessagesView"
+            name="ConflictMessages"
+            restorable="true">
+      </view>
    </extension>
 
 </plugin>
