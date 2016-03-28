@@ -68,25 +68,31 @@
             allowMultiple="false"
             class="collabhubclient.DirectCollaboratorsViewPart"
             id="CollabHubClient.DirectCollaboratorsView"
-            name="DirectCollaborators"
+            name="Edit-Direct-Collaborators"
             restorable="true">
       </view>
       <view
             class="collabhubclient.SemiDirectCollaboratorsViewPart"
             id="CollabHubClient.SemiDirectCollaboratorsView"
-            name="SemiDirectCollaborators"
+            name="Open-Direct-Collaborators"
             restorable="true">
       </view>
       <view
             class="collabhubclient.IndirectCollaboratorsViewPart"
             id="CollabHubClient.IndirectCollaboratorsView"
-            name="IndirectCollaborators"
+            name="Edit-Indirect-Collaborators"
             restorable="true">
       </view>
       <view
             class="collabhubclient.ConflictMessagesView"
             id="CollabHubClient.ConflictMessagesView"
             name="ConflictMessages"
+            restorable="true">
+      </view>
+      <view
+            class="collabhubclient.OpenIndirectCollaboratorsViewPart"
+            id="CollabHubClient.OpenIndirectCollaboratorsView"
+            name="Open-Indirect-Collaborators"
             restorable="true">
       </view>
    </extension>
