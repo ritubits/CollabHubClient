@@ -34,8 +34,12 @@ public class ConflictMessagesView extends ViewPart{
 		Table table = new Table(parent, SWT.SINGLE);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-
-		TableColumn column1 = new TableColumn(table, SWT.LEFT);
+		Display display= table.getDisplay();
+		display.getActiveShell();
+		  Color yellow = display.getSystemColor(SWT.COLOR_YELLOW);
+		    Color blue = display.getSystemColor(SWT.COLOR_CYAN);
+		    
+/*		TableColumn column1 = new TableColumn(table, SWT.LEFT);
 		column1.setWidth(10);
 		column1.setText("");
 		column1.setMoveable(false);
@@ -154,20 +158,21 @@ public class ConflictMessagesView extends ViewPart{
 		column20.setWidth(10);
 		column20.setText("");
 		column20.setMoveable(false);
-		column20.setResizable(false);
+		column20.setResizable(false);*/
 		
 		TableColumn column21 = new TableColumn(table, SWT.CENTER);
-		column21.setWidth(700);
+		column21.setWidth(1000);
 		column21.setText("Conflict Message");
 		column21.setMoveable(false);
 
-		
 		TableItem row1 = new TableItem(table, SWT.NONE);
+		row1.setBackground(blue);
+		
 		TableItem row2 = new TableItem(table, SWT.NONE);
+		row2.setBackground(yellow);
 
-
-	//	row1.setText(new String[] { "Heena", "Method::setData()", "Line No:: 12" });
-	//	row2.setText(new String[] { "Sagar", "Method::fillColor()", "Line No:: 62" });
+		row1.setText(new String[] { "Heena is editing triangle.java @editing Method::setData() @Line No:: 12" });
+		row2.setText(new String[] { "Sagar added @Method::getInformatio() @rectangle.java @Line No:: 76" });
 		
 	}
 
