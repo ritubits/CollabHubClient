@@ -127,6 +127,7 @@ public class StartCollaborationHandler implements IHandler {
 		    	if (activePage.getActiveEditor().isDirty())
 		    	{
 			    	System.out.println(" Dirty:: "+activePage.getActiveEditor().isDirty());
+			    	 Thread.sleep(1000*10);// pick activity data info every 10 second
 		    		sendCurrentArtifact(getCurrentFileName());
 		    	}
 
@@ -304,18 +305,35 @@ public String getCurrentMethod()
  {
 	 System.out.println("Sending Artifact Graph");
 	 IAdaptable editorPart = null;
-	 ITextEditor editor = (ITextEditor) editorPart.getAdapter(ITextEditor.class);
+	 
+	 IEditorPart activeEditor  = activePage.getActiveEditor();
+
+		if(activeEditor instanceof JavaEditor) {
+			ITextEditor editor = (ITextEditor) activeEditor.getAdapter(ITextEditor.class);
+
 		 if (editor != null) {
 		   IDocumentProvider provider = editor.getDocumentProvider();
 		   IDocument document = provider.getDocument(editor.getEditorInput());
+		   System.out.println("file Content::"+document.get());
 		   
-		   IFile file = (IFile) ((IEditorPart) editorPart).getEditorInput().getAdapter(IFile.class);
-		   if (file != null) {
-		       // do stuff
-			 //  file.
-		   }
-	//	   document.
+		   Boolean exist= userClient.getCollabClient();
+			System.out.println("Exist:: "+exist);
+			if (exist) 
+				{
+				//if collaborating
+				try
+				{
+				boolean output= userClient.sendUserArtifactGraphContent(document.get(), currentFileName);
+				System.out.println("From Servlet:: in StartHandler:: sending artifact graph");
+				}
+				catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+
 		 }
+		}
  }
 
 		@Override
