@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Display;
 
 public class StartCollaborationHandler implements IHandler {
 
+	boolean DEBUG= true;
 	static Boolean success= false;
 	IWorkbench workbench =null;
 	IWorkbenchPage activePage = null;
@@ -54,7 +55,7 @@ public class StartCollaborationHandler implements IHandler {
 	public void addHandlerListener(IHandlerListener handlerListener) {
 		// TODO Auto-generated method stub
 
-		System.out.println("In Start Collaboration Project handletr");
+		if (DEBUG) System.out.println("In Start Collaboration Project handletr");
 	}
 
 	@Override
@@ -68,27 +69,27 @@ public class StartCollaborationHandler implements IHandler {
 		// TODO Auto-generated method stub
 
 		eventObject= event;
-		System.out.println("In StartCollaboration handler");
+		if (DEBUG) System.out.println("In StartCollaboration handler");
 		StartCollaborationForm eForm= new StartCollaborationForm();
 		success= eForm.executeForm();
-		System.out.println("In StartCollaboration handler");
+		if (DEBUG) System.out.println("In StartCollaboration handler");
 		
-		System.out.println("Before collabStarted in Handlers:: "+success);
+		if (DEBUG) System.out.println("Before collabStarted in Handlers:: "+success);
 		
 		while (!success)
 		{
 			success = eForm.getCollabStatus();
-			System.out.println("collabStarted in Handlers:: "+success);
+			if (DEBUG) System.out.println("collabStarted in Handlers:: "+success);
 		}
 		
 		//		reaches here when collabStarted
-		try {
+	/*	try {
 			PlatformUI.getWorkbench().getDecoratorManager().setEnabled("DecorationProject.myDecorator", true);
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		System.out.println("collabStarted outside Handlers:: "+success);
+		}*/
+		if (DEBUG) System.out.println("collabStarted outside Handlers:: "+success);
 		userClient = new CollabUserActivityClient();
 		  
 		workbench = PlatformUI.getWorkbench();
@@ -124,32 +125,33 @@ public class StartCollaborationHandler implements IHandler {
 		  while (true)
 		  {
 		      try {
-		    	if (activePage.getActiveEditor().isDirty())
+		  //  	if (activePage.getActiveEditor().isDirty())
 		    	{
-			    	System.out.println(" Dirty:: "+activePage.getActiveEditor().isDirty());
-			    	 Thread.sleep(1000*10);// pick activity data info every 10 second
-		    		sendCurrentArtifact(getCurrentFileName());
+		  //  		if (DEBUG) System.out.println(" Dirty:: "+activePage.getActiveEditor().isDirty());
+		//	    	 Thread.sleep(1000*10);// pick activity data info every 10 second
+		    //		sendCurrentArtifact(getCurrentFileName());
 		    	}
 
 		        Thread.sleep(1000*5);// pick activity data info every 5 second
 		        
-		        											
+		      //  Thread.sleep(1000*1*60);// pick activity data info every 1 minute
+		        
 					userObject.setCurrentFile(getCurrentFileName());
 					activityLineData();
 					userObject.setCurrentLine(lineNo);
 					activityMethodNameData();
-					System.out.println("MethodName from activityMethodNameData:: "+methodName);
+					if (DEBUG) System.out.println("MethodName from activityMethodNameData:: "+methodName);
 					userObject.setCurrentAST(methodName);
 					userObject.setEditFile(getAllFiles());
 					
 					Boolean exist= userClient.getCollabClient();
-					System.out.println("Exist:: "+exist);
+					if (DEBUG) System.out.println("Exist:: "+exist);
 					if (exist) 
 						{
 						//if collaborating
 						userClient.setUserObject(userObject);
 						boolean output= userClient.updateUserActivityTable();
-						System.out.println("From Servlet:: in StartHandler:: "+ output);
+						if (DEBUG) System.out.println("From Servlet:: in StartHandler:: "+ output);
 						}
 					 //call activityClient here for sending information
 					 //create userActivityObject
@@ -160,14 +162,14 @@ public class StartCollaborationHandler implements IHandler {
 		      } catch (Exception e) {
 		        e.printStackTrace();
 		      }
-		      System.out.println("In getUserActivityData");
+		      if (DEBUG) System.out.println("In getUserActivityData");
 		    }
 		  }
 	  
 	  private void syncUI() {
 		    Display.getDefault().asyncExec(new Runnable() {
 		      public void run() {		    	  
-			      System.out.println("sync with UI");
+		    	  if (DEBUG) System.out.println("sync with UI");
 		      }
 		    });
 
@@ -180,11 +182,11 @@ public class StartCollaborationHandler implements IHandler {
 				activityMethodDataJob = new UIJob(Display.getDefault(), "Obtaining Method Name Data") {
 					@Override
 					public IStatus runInUIThread(IProgressMonitor monitor) {
-						System.out.println("in runInUIThread");
+						if (DEBUG) System.out.println("in runInUIThread");
 					//	System.out.println("Cursor::"+ getCursorPosition());
 						methodName= getCurrentMethod();
-						System.out.println("MethodName in activityMethodNameData:: "+methodName);
-						PlatformUI.getWorkbench().getDecoratorManager().update("DecorationProject.myDecorator");
+						if (DEBUG) System.out.println("MethodName in activityMethodNameData:: "+methodName);
+				//		PlatformUI.getWorkbench().getDecoratorManager().update("DecorationProject.myDecorator");
 						return Status.OK_STATUS;
 					}
 				};
@@ -218,7 +220,7 @@ public String getCurrentFileName() throws FileNotFoundException
 			try{
 				if (activePage !=null)
 				  name = activePage.getActiveEditor().getEditorInput().getName();
-					    System.out.println("CurrentFileName:: "+name);
+				if (DEBUG) System.out.println("CurrentFileName:: "+name);
 
 			} catch(Exception e)
 			{
@@ -240,7 +242,7 @@ public Vector getAllFiles() throws FileNotFoundException
 			  int i =name.length;
 			  for (int j=0; j<i; j++)
 			  {
-			    System.out.println("All files:: "+name[j].getName());
+				  if (DEBUG) System.out.println("All files:: "+name[j].getName());
 			    fileNames.add(name[j].getName());
 			  }		  			  
 			} catch(Exception e)
@@ -303,7 +305,7 @@ public String getCurrentMethod()
 
  public void sendCurrentArtifact(String currentFileName)
  {
-	 System.out.println("Sending Artifact Graph");
+	 if (DEBUG) System.out.println("Sending Artifact Graph");
 	 IAdaptable editorPart = null;
 	 
 	 IEditorPart activeEditor  = activePage.getActiveEditor();
@@ -314,17 +316,17 @@ public String getCurrentMethod()
 		 if (editor != null) {
 		   IDocumentProvider provider = editor.getDocumentProvider();
 		   IDocument document = provider.getDocument(editor.getEditorInput());
-		   System.out.println("file Content::"+document.get());
+		   if (DEBUG) System.out.println("file Content::"+document.get());
 		   
 		   Boolean exist= userClient.getCollabClient();
-			System.out.println("Exist:: "+exist);
+		   if (DEBUG) System.out.println("Exist:: "+exist);
 			if (exist) 
 				{
 				//if collaborating
 				try
 				{
-				boolean output= userClient.sendUserArtifactGraphContent(document.get(), currentFileName);
-				System.out.println("From Servlet:: in StartHandler:: sending artifact graph");
+		//		boolean output= userClient.sendUserArtifactGraphContent(document.get(), currentFileName);
+				if (DEBUG) System.out.println("From Servlet:: in StartHandler:: sending artifact graph");
 				}
 				catch (Exception e)
 					{
@@ -351,7 +353,7 @@ public String getCurrentMethod()
 	@Override
 	public void removeHandlerListener(IHandlerListener handlerListener) {
 		// TODO Auto-generated method stub
-		System.out.println("from removeHandlerListener");
+		if (DEBUG) System.out.println("from removeHandlerListener");
 
 	}
 	

@@ -13,7 +13,7 @@ import collabhubclient.RegProjectClient;
 
 public class EntryFormRegProject {
 
-	
+	static boolean DEBUG= false;
 	static RegProjectClient regObject = null;
 	static Boolean registerSuceed = false;
 	static String regProjectName= null;
@@ -92,11 +92,11 @@ public class EntryFormRegProject {
 										
 						// do all null checking here
 						
-						System.out.println("In registerProjectForm: Register");
+						if (DEBUG) System.out.println("In registerProjectForm: Register");
 						if ((!projectText.getText().isEmpty())) {
-						System.out.println("Project Name:"+ projectText.getText());
-						System.out.println("Owner Name:"+ ownerText.getText());
-						System.out.println("IP Address:"+ serverText.getText());}
+							if (DEBUG) System.out.println("Project Name:"+ projectText.getText());
+							if (DEBUG) System.out.println("Owner Name:"+ ownerText.getText());
+							if (DEBUG) System.out.println("IP Address:"+ serverText.getText());}
 					
 						if ((!projectText.getText().isEmpty()) && (!ownerText.getText().isEmpty()) && (!serverText.getText().isEmpty()) && (!DBserverText.getText().isEmpty()))
 						{
@@ -122,7 +122,7 @@ public class EntryFormRegProject {
 						}
 						catch (Exception ex)
 						{
-							System.out.println("Error calling RegClient");
+							if (DEBUG) System.out.println("Error calling RegClient");
 							JOptionPane.showMessageDialog(null, "Unable to register the project", "Message Info", JOptionPane.INFORMATION_MESSAGE);
 							ex.printStackTrace();
 						}

@@ -13,7 +13,7 @@ import collabhubclient.StartCollaborationClient;
 
 public class StartCollaborationForm {
 
-	
+	static boolean DEBUG= false;
 	static StartCollaborationClient collabClient = null;
 	static Boolean registerSuceed = false;
 	static String regProjectName= null;
@@ -104,11 +104,11 @@ public class StartCollaborationForm {
 										
 						// do all null checking here
 						
-						System.out.println("In StartCollaborationForm");
+						if (DEBUG) System.out.println("In StartCollaborationForm");
 						if ((!projectText.getText().isEmpty())) {
-						System.out.println("Project Name:"+ projectText.getText());
-						System.out.println("Collaborator Name:"+ collabText.getText());
-						System.out.println("IP Address:"+ serverText.getText());}
+							if (DEBUG) System.out.println("Project Name:"+ projectText.getText());
+							if (DEBUG) System.out.println("Collaborator Name:"+ collabText.getText());
+							if (DEBUG) System.out.println("IP Address:"+ serverText.getText());}
 					
 						if ((!projectText.getText().isEmpty()) && (!collabText.getText().isEmpty()) && (!serverText.getText().isEmpty()) && (!DBserverText.getText().isEmpty()))
 						{
@@ -136,7 +136,7 @@ public class StartCollaborationForm {
 						}
 						catch (Exception ex)
 						{
-							System.out.println("Error calling collabClient");
+							if (DEBUG) System.out.println("Error calling collabClient");
 							JOptionPane.showMessageDialog(null, "Unable to connect to CollabHub", "Message Info", JOptionPane.INFORMATION_MESSAGE);
 							ex.printStackTrace();
 						}

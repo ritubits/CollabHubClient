@@ -12,13 +12,14 @@ import collabhubclient.StopCollaborationClient;
 public class StopCollaborationHandler implements IHandler {
 
 	static Boolean success= false;
-	@Override
+	boolean DEBUG= false;
+	
 	public void addHandlerListener(IHandlerListener handlerListener) {
 		// TODO Auto-generated method stub
 		
 		//do initialization here
 		// executed only once
-		System.out.println("In StopCollaborationHandler");
+		if (DEBUG) System.out.println("In StopCollaborationHandler");
 	}
 
 	@Override
@@ -32,7 +33,7 @@ public class StopCollaborationHandler implements IHandler {
 		// TODO Auto-generated method stub
 		//this gets executed every time the button is pressed
 
-		System.out.println("In StopCollaborationHandler");
+		if (DEBUG) System.out.println("In StopCollaborationHandler");
 		
 		try
 		{
@@ -51,7 +52,7 @@ public class StopCollaborationHandler implements IHandler {
 		collab.closeClient();
 		} catch(Exception e)
 		{
-			System.out.println("Error disconnecting");
+			if (DEBUG) System.out.println("Error disconnecting");
 			JOptionPane.showMessageDialog(null, "Unable to disconnect from CollabHub", "Message Info", JOptionPane.INFORMATION_MESSAGE);
 			e.printStackTrace();
 		}

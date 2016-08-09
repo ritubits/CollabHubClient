@@ -9,6 +9,7 @@ import org.apache.http.impl.client.HttpClients;
 
 public class DeRegProjectClient {
 	
+	boolean DEBUG= false;
 	HttpEntity entity=null;
 	
 	String projectName;
@@ -28,21 +29,25 @@ public class DeRegProjectClient {
 		    
 	public boolean executeClient() throws Exception {
 		
-		   System.out.println("Before creating client: DeregProject");
+		if (DEBUG) System.out.println("Before creating client: DeregProject");
 		
 	  	httpclient = HttpClients.createDefault();
-	    System.out.println("After creating client: DeregProject");
+	  	if (DEBUG) System.out.println("After creating client: DeregProject");
 	    
-	        System.out.println("Invoking Sevlet DeRegister"+"http://"+ipAddTomcat+"/collabserver/DeRegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
+	  	if (DEBUG) System.out.println("Invoking Sevlet DeRegister"+"http://"+ipAddTomcat+"/collabserver/DeRegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
 	    	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/DeRegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
 	    	
 	    	CloseableHttpResponse response = httpclient.execute(httpget);
 	    	  		
+	    	if (DEBUG) 
+	    	{	
 	    	System.out.println(response.getProtocolVersion());
 	    	System.out.println(response.getStatusLine().getStatusCode());
 	    	System.out.println(response.getStatusLine().getReasonPhrase());
+	    	}
+	    	
 	    	String status= response.getStatusLine().toString();
-	    	System.out.println("DeregClient "+response.getStatusLine().toString());
+	    	if (DEBUG) System.out.println("DeregClient "+response.getStatusLine().toString());
 	    	
 	    	response.close();
 	    	//check if returned status is not correct

@@ -9,6 +9,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class OpenIndirectCollaboratorsViewPart extends ViewPart{
 
+	boolean DEBUG= false;
 	public OpenIndirectCollaboratorsViewPart()
 	{
 		super();

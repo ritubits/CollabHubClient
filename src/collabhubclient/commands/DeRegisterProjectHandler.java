@@ -9,7 +9,8 @@ import collabhubclient.EntryFormDeRegProject;
 
 public class DeRegisterProjectHandler implements IHandler {
 
-	@Override
+	
+	boolean DEBUG= false;
 	public void addHandlerListener(IHandlerListener handlerListener) {
 		// TODO Auto-generated method stub
 
@@ -25,7 +26,7 @@ public class DeRegisterProjectHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// TODO Auto-generated method stub
 		// check if project registered
-		System.out.println("In DeRegister Project");
+		if (DEBUG) System.out.println("In DeRegister Project");
 		EntryFormDeRegProject eForm= new EntryFormDeRegProject();
 	    eForm.executeForm();
 		

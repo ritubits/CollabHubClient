@@ -13,7 +13,7 @@ import collabhubclient.DeRegProjectClient;
 
 public class EntryFormDeRegProject {
 
-	
+	static boolean DEBUG= false;
 	static DeRegProjectClient deRegObject = null;
 	
 		
@@ -91,11 +91,11 @@ public class EntryFormDeRegProject {
 										
 						// do all null checking here
 						
-						System.out.println("In deregisterProjectForm: DERegister");
+						if (DEBUG) System.out.println("In deregisterProjectForm: DERegister");
 						if ((!projectText.getText().isEmpty())) {
-						System.out.println("Project Name:"+ projectText.getText());
-						System.out.println("Owner Name:"+ ownerText.getText());
-						System.out.println("IP Address:"+ serverText.getText());}
+							if (DEBUG) System.out.println("Project Name:"+ projectText.getText());
+							if (DEBUG) System.out.println("Owner Name:"+ ownerText.getText());
+							if (DEBUG) System.out.println("IP Address:"+ serverText.getText());}
 					
 						if ((!projectText.getText().isEmpty()) && (!ownerText.getText().isEmpty()) && (!serverText.getText().isEmpty()) && (!DBserverText.getText().isEmpty()))
 						{
@@ -118,7 +118,7 @@ public class EntryFormDeRegProject {
 						}
 						catch (Exception ex)
 						{
-							System.out.println("Error calling DeRegClient");
+							if (DEBUG) System.out.println("Error calling DeRegClient");
 							JOptionPane.showMessageDialog(null, "Unable to deregister the project", "Message Info", JOptionPane.INFORMATION_MESSAGE);
 							ex.printStackTrace();
 						}

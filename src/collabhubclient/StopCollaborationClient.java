@@ -13,6 +13,7 @@ import collabhubclient.StartCollaborationClient;
 
 public class StopCollaborationClient {
 	
+	boolean DEBUG= false;
 	HttpEntity entity=null;
 	
 	String projectName;
@@ -53,11 +54,12 @@ public class StopCollaborationClient {
 	    	
 	    	CloseableHttpResponse response = collabClient.execute(httpget);
 	    	  		
-	    	System.out.println(response.getProtocolVersion());
-	    	System.out.println(response.getStatusLine().getStatusCode());
-	    	System.out.println(response.getStatusLine().getReasonPhrase());
+	    	if (DEBUG) System.out.println(response.getProtocolVersion());
+	    	if (DEBUG) System.out.println(response.getStatusLine().getStatusCode());
+	    	if (DEBUG) System.out.println(response.getStatusLine().getReasonPhrase());
+	    	
 	    	String status= response.getStatusLine().toString();
-	    	System.out.println("StopCollaborationClient "+response.getStatusLine().toString());
+	    	if (DEBUG) System.out.println("StopCollaborationClient "+response.getStatusLine().toString());
 	    	entity= response.getEntity();
 
 	    	response.close();
@@ -71,14 +73,14 @@ public class StopCollaborationClient {
 		    		
 		    		} else {
 		    		// Stream content out
-		    			System.out.println("Received empty string from server");
+		    			if (DEBUG) System.out.println("Received empty string from server");
 		    		}
 		    	}
 		    	
 		    	Enumeration enumVect = projectVector.elements();
 		    	while (enumVect.hasMoreElements())
 		    	{
-		    		System.out.println("From servlet: "+enumVect.nextElement());
+		    		if (DEBUG) System.out.println("From servlet: "+enumVect.nextElement());
 		    	}
 		    	
 	    	//check if returned status is not correct

@@ -8,6 +8,7 @@ import org.apache.http.impl.client.HttpClients;
 
 public class StartCollaborationClient {
 	
+	boolean DEBUG= false;
 	HttpEntity entity=null;
 	
 	static String projectName;
@@ -27,10 +28,10 @@ public class StartCollaborationClient {
 		    
 	public boolean createCollabClient()
 	{
-		 System.out.println("Before creating client: StartCollaborationClient");
+		if (DEBUG) System.out.println("Before creating client: StartCollaborationClient");
 		 httpclient = HttpClients.createDefault();
 		 
-		 System.out.println("After creating client: StartCollaborationClient");
+		 if (DEBUG) System.out.println("After creating client: StartCollaborationClient");
 		 
 		 if (httpclient != null) return true; 
 		 else return false;
@@ -75,17 +76,17 @@ public class StartCollaborationClient {
 		
 		  
 	    
-	      System.out.println("Invoking Servlet StartCollaboration"+"http://"+ipAddTomcat+"/collabserver/StartCollaborationServlet?pName="+projectName+"&cName="+collabName);
+		if (DEBUG) System.out.println("Invoking Servlet StartCollaboration"+"http://"+ipAddTomcat+"/collabserver/StartCollaborationServlet?pName="+projectName+"&cName="+collabName);
 	    
 	    	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/StartCollaborationServlet?pName="+projectName+"&cName="+collabName);
 	    	
 	    	CloseableHttpResponse response = httpclient.execute(httpget);
 	    	  		
-	    	System.out.println(response.getProtocolVersion());
-	    	System.out.println(response.getStatusLine().getStatusCode());
-	    	System.out.println(response.getStatusLine().getReasonPhrase());
+	    	if (DEBUG) System.out.println(response.getProtocolVersion());
+	    	if (DEBUG) System.out.println(response.getStatusLine().getStatusCode());
+	    	if (DEBUG) System.out.println(response.getStatusLine().getReasonPhrase());
 	    	String status= response.getStatusLine().toString();
-	    	System.out.println("StartCollaborationClient "+response.getStatusLine().toString());
+	    	if (DEBUG) System.out.println("StartCollaborationClient "+response.getStatusLine().toString());
 	    	entity= response.getEntity();
 	    	response.close();
 	        

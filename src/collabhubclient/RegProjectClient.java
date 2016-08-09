@@ -12,6 +12,7 @@ import org.apache.http.util.EntityUtils;
 
 public class RegProjectClient {
 	
+	boolean DEBUG= true;
 	HttpEntity entity=null;
 	
 	String projectName;
@@ -31,21 +32,21 @@ public class RegProjectClient {
 		    
 	public boolean executeClient() throws Exception {
 		
-		   System.out.println("Before creating client: regProject");
+		if (DEBUG) System.out.println("Before creating client: regProject");
 		
 	  	httpclient = HttpClients.createDefault();
-	    System.out.println("After creating client: regProject");
+	  	if (DEBUG) System.out.println("After creating client: regProject");
 	    
-	      System.out.println("Invoking Servlet RegisterProject"+"http://"+ipAddTomcat+"/collabserver/RegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
+	  	if (DEBUG)  System.out.println("Invoking Servlet RegisterProject"+"http://"+ipAddTomcat+"/collabserver/RegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
 	       	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/RegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
 	    	
 	    	CloseableHttpResponse response = httpclient.execute(httpget);
 	    	  		
-	    	System.out.println(response.getProtocolVersion());
-	    	System.out.println(response.getStatusLine().getStatusCode());
-	    	System.out.println(response.getStatusLine().getReasonPhrase());
+	    	if (DEBUG) System.out.println(response.getProtocolVersion());
+	    	if (DEBUG)	System.out.println(response.getStatusLine().getStatusCode());
+	    	if (DEBUG) System.out.println(response.getStatusLine().getReasonPhrase());
 	    	String status= response.getStatusLine().toString();
-	    	System.out.println("regClient "+response.getStatusLine().toString());
+	    	if (DEBUG) System.out.println("regClient "+response.getStatusLine().toString());
 	    	entity= response.getEntity();
 	    	response.close();
 	        
@@ -58,14 +59,14 @@ public class RegProjectClient {
 		    		
 		    		} else {
 		    		// Stream content out
-		    			System.out.println("Received empty string from server");
+		    			if (DEBUG) System.out.println("Received empty string from server");
 		    		}
 		    	}
 		    	
 		    	Enumeration enumVect = projectVector.elements();
 		    	while (enumVect.hasMoreElements())
 		    	{
-		    		System.out.println("From servlet: "+enumVect.nextElement());
+		    		if (DEBUG) System.out.println("From servlet: "+enumVect.nextElement());
 		    	}
 		    	
 	    	//check if returned status is not correct

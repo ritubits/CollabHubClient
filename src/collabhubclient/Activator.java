@@ -10,6 +10,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
+	boolean DEBUG= false;
 	public static final String PLUGIN_ID = "CollabHubClient"; //$NON-NLS-1$
 
 	// The shared instance
@@ -27,7 +28,7 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		
-		PlatformUI.getWorkbench().getDecoratorManager().setEnabled("DecorationProject.myDecorator", false);
+//		PlatformUI.getWorkbench().getDecoratorManager().setEnabled("DecorationProject.myDecorator", false);
 		super.start(context);
 		plugin = this;
 	}

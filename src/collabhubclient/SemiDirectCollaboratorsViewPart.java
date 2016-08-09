@@ -9,6 +9,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class SemiDirectCollaboratorsViewPart extends ViewPart{
 
+	boolean DEBUG= false;
 	public SemiDirectCollaboratorsViewPart()
 	{
 		super();

@@ -5,6 +5,7 @@ import java.util.Vector;
 
 public class CollabUserActivity extends Object{
 	
+	boolean DEBUG= false;
 	public String currentFile=null;
 	public int currentline=0;
 	public String currentAST=null;
@@ -60,7 +61,7 @@ public class CollabUserActivity extends Object{
 			
 			send = send + newString;
 		}
-		System.out.println("Sending activity string:: "+send);
+		if (DEBUG) System.out.println("Sending activity string:: "+send);
 		return (send);
 	}
 }

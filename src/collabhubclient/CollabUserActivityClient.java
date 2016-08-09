@@ -1,17 +1,26 @@
 package collabhubclient;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.apache.http.NameValuePair; 
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 
 
 public class CollabUserActivityClient {
 	
+	boolean DEBUG= true;
 	HttpEntity entity=null;
 	
 	CollabUserActivity userObject;
@@ -21,7 +30,7 @@ public class CollabUserActivityClient {
 	{
 		httpclient= StartCollaborationClient.httpclient;
 		
-		 System.out.println("Obtained client from StartCollaborationClient");
+		if (DEBUG) System.out.println("Obtained client from StartCollaborationClient");
 		 
 		 if (httpclient != null) return true; 
 		 else return false;
@@ -41,14 +50,18 @@ public class CollabUserActivityClient {
 	    String collabName = StartCollaborationClient.getCollabName();
 	  
 	    	HttpGet httpget = new HttpGet("http://"+ipAddT+"/collabserver/UserActivityServlet?&cName="+collabName+"&"+send);
-	    	System.out.println("Invoking Servlet:: "+"http://"+ipAddT+"/collabserver/UserActivityServlet?&cName="+collabName+"&"+send);
+	    	if (DEBUG) System.out.println("Invoking Servlet:: "+"http://"+ipAddT+"/collabserver/UserActivityServlet?&cName="+collabName+"&"+send);
 	    	CloseableHttpResponse response = httpclient.execute(httpget);
 	    	  		
-	    	System.out.println(response.getProtocolVersion());
-	    	System.out.println(response.getStatusLine().getStatusCode());
-	    	System.out.println(response.getStatusLine().getReasonPhrase());
+	    	if (DEBUG) 
+	    		{
+	    		System.out.println(response.getProtocolVersion());
+	    		System.out.println(response.getStatusLine().getStatusCode());
+		    	System.out.println(response.getStatusLine().getReasonPhrase());
+	    		}
+	    	
 	    	String status= response.getStatusLine().toString();
-	    	System.out.println("CollabUserActivityClient "+response.getStatusLine().toString());
+	    	if (DEBUG) System.out.println("CollabUserActivityClient "+response.getStatusLine().toString());
 	    	entity= response.getEntity();
 
 	        response.close();
@@ -62,14 +75,14 @@ public class CollabUserActivityClient {
 		    		
 		    		} else {
 		    		// Stream content out
-		    			System.out.println("Received empty string from server");
+		    			if (DEBUG) System.out.println("Received empty string from server");
 		    		}
 		    	}
 		    	
 		    	Enumeration enumVect = projectVector.elements();
 		    	while (enumVect.hasMoreElements())
 		    	{
-		    		System.out.println("From servlet: "+enumVect.nextElement());
+		    		if (DEBUG) System.out.println("From servlet: "+enumVect.nextElement());
 		    	}
 		    	
 	    	//check if returned status is not correct
@@ -80,20 +93,35 @@ public class CollabUserActivityClient {
 	    }
 	
 	
-	public boolean sendUserArtifactGraphContent(String fileContent, String fileName) throws Exception {
+/*	public boolean sendUserArtifactGraphContent(String fileContent, String fileName) throws Exception {
 		
 	    String ipAddT= StartCollaborationClient.getipAddTomcat();
 	    String collabName = StartCollaborationClient.getCollabName();
-	  
-	    	HttpGet httpget = new HttpGet("http://"+ipAddT+"/collabserver/UserArtifactGrpahServlet?&collabName="+collabName+"&fileContent="+fileContent+"&fileName="+fileName);
-	    	System.out.println("Invoking Servlet:: "+"http://"+ipAddT+"/collabserver/UserArtifactGrpahServlet?&cName="+collabName+"&fileContent="+fileContent);
-	    	CloseableHttpResponse response = httpclient.execute(httpget);
-	    	  		
+    
+		fileContent="public classsecond";
+		if (DEBUG) System.out.println("fileContent:: "+fileContent);
+
+	    //	HttpGet httpget = new HttpGet("http://"+ipAddT+"/collabserver/UserArtifactGraphServlet?collabName="+collabName+"&fileName="+fileName+"&fileContent="+fileContent);
+	  //  	HttpGet httpget = new HttpGet("http://"+ipAddT+"/collabserver/UserArtifactGraphServlet?&collabName="+collabName+"&fileName="+fileName);
+	  //  	System.out.println("Invoking Servlet:: "+"http://"+ipAddT+"/collabserver/UserArtifactGraphServlet?&cName="+collabName+"&fileContent="+fileContent);
+	    
+	    //	CloseableHttpResponse response = httpclient.execute(httpget);
+	        
+	    	HttpPost post = new HttpPost("http://localhost:8080/ServletExample/SampleServlet");
+	    	post.setHeader("Content-Type", "application/xml");
+	    //	post.setEntity(new StringEntity(generateXML()));
+	    //	HttpClient client = new DefaultHttpClient();
+	    	HttpResponse response = client.execute(post);
+	    	
+	        
+	    	if (DEBUG)
+	    	{
 	    	System.out.println(response.getProtocolVersion());
 	    	System.out.println(response.getStatusLine().getStatusCode());
 	    	System.out.println(response.getStatusLine().getReasonPhrase());
+	    	}
 	    	String status= response.getStatusLine().toString();
-	    	System.out.println("sendUserArtifactGraphContent "+response.getStatusLine().toString());
+	    	if (DEBUG) System.out.println("sendUserArtifactGraphContent "+response.getStatusLine().toString());
 	    	entity= response.getEntity();
 
 	        response.close();
@@ -107,21 +135,21 @@ public class CollabUserActivityClient {
 		    		
 		    		} else {
 		    		// Stream content out
-		    			System.out.println("Received empty string from server:: sendUserArtifactGraphContent");
+		    			if (DEBUG) System.out.println("Received empty string from server:: sendUserArtifactGraphContent");
 		    		}
 		    	}
 		    	
 		    	Enumeration enumVect = projectVector.elements();
 		    	while (enumVect.hasMoreElements())
 		    	{
-		    		System.out.println("From servlet: sendUserArtifactGraphContent"+enumVect.nextElement());
+		    		if (DEBUG) System.out.println("From servlet: sendUserArtifactGraphContent"+enumVect.nextElement());
 		    	}
 		    	
 	    	//check if returned status is not correct
 	    	if (status.contains("Error")) return false; 
 	    	else    	
 	    	return true;
-	}
+	}*/
 /*	public void closeClient() throws Exception
 	{
 		try

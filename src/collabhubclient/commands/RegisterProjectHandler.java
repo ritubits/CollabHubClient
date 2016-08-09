@@ -9,6 +9,7 @@ import collabhubclient.EntryFormRegProject;
 
 public class RegisterProjectHandler implements IHandler {
 
+	boolean DEBUG= false;
 	static Boolean success= false;
 	@Override
 	public void addHandlerListener(IHandlerListener handlerListener) {
@@ -16,7 +17,7 @@ public class RegisterProjectHandler implements IHandler {
 		
 		//do initialization here
 		// executed only once
-		System.out.println("In Reigister Project handletr");
+		if (DEBUG) System.out.println("In Reigister Project handletr");
 	}
 
 	@Override
@@ -29,7 +30,7 @@ public class RegisterProjectHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// TODO Auto-generated method stub
 		//this gets executed every time the button is pressed
-		System.out.println("In Register Project");
+		if (DEBUG) System.out.println("In Register Project");
 		EntryFormRegProject eForm= new EntryFormRegProject();
 		success= eForm.executeForm();
 		
