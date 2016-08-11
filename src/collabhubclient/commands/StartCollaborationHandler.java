@@ -127,12 +127,12 @@ public class StartCollaborationHandler implements IHandler {
 		      try {
 		  //  	if (activePage.getActiveEditor().isDirty())
 		    	{
-		  //  		if (DEBUG) System.out.println(" Dirty:: "+activePage.getActiveEditor().isDirty());
-		//	    	 Thread.sleep(1000*10);// pick activity data info every 10 second
-		    //		sendCurrentArtifact(getCurrentFileName());
+		    		if (DEBUG) System.out.println(" Dirty:: "+activePage.getActiveEditor().isDirty());
+			    	 Thread.sleep(1000*30);// pick activity data info every 60 second
+		    		sendCurrentArtifact(getCurrentFileName());
 		    	}
 
-		        Thread.sleep(1000*5);// pick activity data info every 5 second
+		        Thread.sleep(1000*10);// pick activity data info every 10 second
 		        
 		      //  Thread.sleep(1000*1*60);// pick activity data info every 1 minute
 		        
@@ -325,7 +325,7 @@ public String getCurrentMethod()
 				//if collaborating
 				try
 				{
-		//		boolean output= userClient.sendUserArtifactGraphContent(document.get(), currentFileName);
+				boolean output= userClient.sendUserArtifactGraphContent(document.get(), currentFileName);
 				if (DEBUG) System.out.println("From Servlet:: in StartHandler:: sending artifact graph");
 				}
 				catch (Exception e)
