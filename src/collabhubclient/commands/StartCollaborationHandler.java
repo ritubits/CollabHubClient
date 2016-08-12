@@ -15,8 +15,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -30,6 +28,10 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.compiler.IProblem;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.internal.ui.javaeditor.EditorUtility;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaEditor;
 import org.eclipse.jface.text.IDocument;
@@ -50,6 +52,7 @@ public class StartCollaborationHandler implements IHandler {
 	private UIJob activityLineDataJob;
 	String methodName=null;
 	int lineNo;
+	boolean compilable=false;
 	static CollabUserActivityClient userClient;
 	static ExecutionEvent eventObject;
 	public void addHandlerListener(IHandlerListener handlerListener) {
@@ -93,7 +96,7 @@ public class StartCollaborationHandler implements IHandler {
 		userClient = new CollabUserActivityClient();
 		  
 		workbench = PlatformUI.getWorkbench();
-	//	workbench.
+
 		activePage = workbench.getActiveWorkbenchWindow().getActivePage();
 
 		if (activePage.CHANGE_EDITOR_CLOSE != null)
@@ -125,17 +128,7 @@ public class StartCollaborationHandler implements IHandler {
 		  while (true)
 		  {
 		      try {
-		  //  	if (activePage.getActiveEditor().isDirty())
-		    	{
-		    		if (DEBUG) System.out.println(" Dirty:: "+activePage.getActiveEditor().isDirty());
-			    	 Thread.sleep(1000*30);// pick activity data info every 60 second
-		    		sendCurrentArtifact(getCurrentFileName());
-		    	}
-
-		        Thread.sleep(1000*10);// pick activity data info every 10 second
-		        
-		      //  Thread.sleep(1000*1*60);// pick activity data info every 1 minute
-		        
+		    	  compilable= false;
 					userObject.setCurrentFile(getCurrentFileName());
 					activityLineData();
 					userObject.setCurrentLine(lineNo);
@@ -153,12 +146,18 @@ public class StartCollaborationHandler implements IHandler {
 						boolean output= userClient.updateUserActivityTable();
 						if (DEBUG) System.out.println("From Servlet:: in StartHandler:: "+ output);
 						}
-					 //call activityClient here for sending information
-					 //create userActivityObject
-					 //cretae userActivityClient
-					 //client sends the activity info to the activityservlet
-					 //Activity servlet writes to the table														 
-		        	       
+
+					  //  	if (activePage.getActiveEditor().isDirty())
+			    	{
+			    		if (DEBUG) System.out.println(" Dirty:: "+activePage.getActiveEditor().isDirty());
+			    		if (DEBUG) System.out.println("compilable:: "+compilable);			    	
+			    		if (compilable) sendCurrentArtifact(getCurrentFileName());
+			    		//Thread.sleep(1000*30);// pick activity data info every 60 second
+			    	}
+			    	
+
+			        Thread.sleep(1000*20);// pick activity data info every 20 second
+			    	
 		      } catch (Exception e) {
 		        e.printStackTrace();
 		      }
@@ -288,6 +287,34 @@ public String getCurrentMethod()
 		    try {
 		        ITextSelection sel = (ITextSelection) ((JavaEditor) activeEditor).getSelectionProvider().getSelection();
 		        int offset = sel.getOffset();
+		       // compilable= root.getJavaProject().hasBuildState();
+		      //Get compilation Unit
+		        ASTParser parser = ASTParser.newParser(AST.JLS4);
+		        parser.setKind(ASTParser.K_COMPILATION_UNIT);
+		        parser.setSource(root);
+		        parser.setResolveBindings(true); 
+		        CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+		        int error=0;
+		        IProblem[] problemList= cu.getProblems();
+		        if (problemList.length != 0)
+		        {
+		        	
+		        	for ( int i=0; i< problemList.length && error ==0; i++) {
+		        		IProblem iProblem = problemList[i];
+		        	   //If it is an error
+		        	   if (iProblem.isError())
+		        	   {
+		        		   compilable= false;
+		        		   error ++;
+		        		   
+		        	   }
+		        	}
+		        	if (error ==0) compilable= true;
+		        	
+		        }
+		        else compilable=true;
+		        
+		        if (DEBUG) System.out.println("compilable from getCurrentMethod():: "+compilable);	
 		        IJavaElement element = root.getElementAt(offset);
 		        
 		        if (element !=null)
@@ -319,7 +346,7 @@ public String getCurrentMethod()
 		   if (DEBUG) System.out.println("file Content::"+document.get());
 		   
 		   Boolean exist= userClient.getCollabClient();
-		   if (DEBUG) System.out.println("Exist:: "+exist);
+	//	   if (DEBUG) System.out.println("Exist:: "+exist);
 			if (exist) 
 				{
 				//if collaborating

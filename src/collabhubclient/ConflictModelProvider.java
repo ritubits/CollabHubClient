@@ -25,11 +25,7 @@ public enum ConflictModelProvider {
     messages = new ArrayList<String>();
     
     if (collabClient == null) messages.add("Collaboration Not Started");
-    
-    
 
-    
- //   if (collabClient != null)
     {
     	//create thread here
     	ConflictThread myThread= new ConflictThread();
@@ -67,11 +63,18 @@ public enum ConflictModelProvider {
 		if (status.contains("Error")) System.out.println("Error::");
 
 		Vector projectVector = new Vector();
- 		  
+ 		  String data; 		  
     	if (entity != null) {
     		long len = entity.getContentLength();
     		if (len != -1 && len < 2048) {
-    		projectVector.add(EntityUtils.toString(entity));
+    			data= EntityUtils.toString(entity);
+    			System.out.println("EntityUtils.toString(entity)"+data);
+    			if (data.equals("null")) 	
+    				{
+    				System.out.println("Data is null");
+    				projectVector.add("No messages");
+    				}
+    			else projectVector.add(data);
     		
     		} else {
     		// Stream content out
@@ -82,7 +85,6 @@ public enum ConflictModelProvider {
     	Enumeration enumVect = projectVector.elements();
     	while (enumVect.hasMoreElements())
     	{
-    		//messages.add(enumVect.nextElement().toString());
     		parse(enumVect.nextElement().toString());
     	//	System.out.println("From servlet: "+enumVect.nextElement());
     	}
