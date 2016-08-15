@@ -20,7 +20,7 @@ import org.eclipse.ui.part.ViewPart;
 public class ConflictMessagesView extends ViewPart{
 
 	boolean DEBUG= true;
-	 private TableViewer viewer;
+	 public static TableViewer viewer;
 	public ConflictMessagesView ()
 	{
 		super();

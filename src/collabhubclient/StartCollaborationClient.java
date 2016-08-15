@@ -1,5 +1,10 @@
 package collabhubclient;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,7 +20,7 @@ public class StartCollaborationClient {
 	static String collabName;
 	static String ipAddTomcat;
 	static String ipAddMySQL;
-	static CloseableHttpClient httpclient;
+	public static CloseableHttpClient httpclient;
 
 
 	public void setConfigProjectValues(String pName, String cName, String ipT, String ipSQL )
@@ -24,8 +29,43 @@ public class StartCollaborationClient {
 		collabName= cName;
 		ipAddTomcat = ipT;
 		ipAddMySQL= ipSQL;
+		
+		writeConfigDetailstoFileForDecorator();
 	}
-		    
+	
+	public void writeConfigDetailstoFileForDecorator()
+	{
+
+			File configFile= new File("D://configDecorator.java");		
+
+				try
+				{				
+					 if (configFile.exists()) {
+						 configFile.delete();
+						 configFile.createNewFile();
+				        	}				
+				FileWriter fw = new FileWriter(configFile.getAbsoluteFile(), true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				bw.write("projectName|"+projectName);
+				bw.newLine();
+				
+				bw.write("collabName|"+collabName);
+				bw.newLine();
+				
+				bw.write("ipAddTomcat|"+ipAddTomcat);
+				bw.newLine();
+				
+				bw.write("ipAddMySQL|"+ipAddMySQL);
+				bw.newLine();
+				
+				bw.close();
+
+				
+				} catch (IOException e) {
+					e.printStackTrace();
+			
+		}
+	}
 	public boolean createCollabClient()
 	{
 		if (DEBUG) System.out.println("Before creating client: StartCollaborationClient");

@@ -1,5 +1,6 @@
 package collabhubclient.commands;
 
+
 import java.io.FileNotFoundException;
 import java.util.Vector;
 
@@ -21,6 +22,7 @@ import org.eclipse.core.runtime.IStatus;
 
 import collabhubclient.CollabUserActivity;
 import collabhubclient.CollabUserActivityClient;
+import collabhubclient.StartCollaborationClient;
 import collabhubclient.StartCollaborationForm;
 
 import org.eclipse.core.runtime.Status;
@@ -99,6 +101,8 @@ public class StartCollaborationHandler implements IHandler {
 
 		activePage = workbench.getActiveWorkbenchWindow().getActivePage();
 
+		
+		
 		if (activePage.CHANGE_EDITOR_CLOSE != null)
 		{
 			
@@ -110,7 +114,8 @@ public class StartCollaborationHandler implements IHandler {
 		    
 		        syncUI();
 		       
-		        return Status.OK_STATUS;
+				if (StartCollaborationClient.httpclient != null) return Status.OK_STATUS;
+				else return Status.CANCEL_STATUS;
 		      }
 
 		    };
@@ -186,7 +191,8 @@ public class StartCollaborationHandler implements IHandler {
 						methodName= getCurrentMethod();
 						if (DEBUG) System.out.println("MethodName in activityMethodNameData:: "+methodName);
 				//		PlatformUI.getWorkbench().getDecoratorManager().update("DecorationProject.myDecorator");
-						return Status.OK_STATUS;
+						if (StartCollaborationClient.httpclient != null) return Status.OK_STATUS;
+						else return Status.CANCEL_STATUS;
 					}
 				};
 				activityMethodDataJob.setSystem(true);
@@ -203,7 +209,8 @@ public class StartCollaborationHandler implements IHandler {
 					public IStatus runInUIThread(IProgressMonitor monitor) {
 					
 						lineNo= getCursorPosition();
-						return Status.OK_STATUS;
+						if (StartCollaborationClient.httpclient != null) return Status.OK_STATUS;
+						else return Status.CANCEL_STATUS;
 					}
 				};
 				activityLineDataJob.setSystem(true);
@@ -383,7 +390,6 @@ public String getCurrentMethod()
 		if (DEBUG) System.out.println("from removeHandlerListener");
 
 	}
-	
 
 		
 }

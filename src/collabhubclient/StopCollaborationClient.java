@@ -95,6 +95,7 @@ public class StopCollaborationClient {
 	{
 		try
 		{
+			
 			collabClient.close();
 		}
 		catch (Exception e)

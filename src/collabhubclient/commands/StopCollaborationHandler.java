@@ -2,11 +2,13 @@ package collabhubclient.commands;
 
 import javax.swing.JOptionPane;
 
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 
+import collabhubclient.StartCollaborationClient;
 import collabhubclient.StopCollaborationClient;
 
 public class StopCollaborationHandler implements IHandler {
@@ -38,6 +40,7 @@ public class StopCollaborationHandler implements IHandler {
 		try
 		{
 		StopCollaborationClient collab = new StopCollaborationClient();
+			
 		Boolean status= collab.executeClient();
 		
 		if (status)
@@ -50,6 +53,10 @@ public class StopCollaborationHandler implements IHandler {
 			JOptionPane.showMessageDialog(null, "Unable to disconnect from CollabHub", "Message Info", JOptionPane.INFORMATION_MESSAGE);
 		
 		collab.closeClient();
+		
+		// stop all UI JOBS here
+		
+		
 		} catch(Exception e)
 		{
 			if (DEBUG) System.out.println("Error disconnecting");

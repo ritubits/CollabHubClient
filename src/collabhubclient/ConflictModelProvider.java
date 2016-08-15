@@ -89,6 +89,7 @@ public enum ConflictModelProvider {
     	//	System.out.println("From servlet: "+enumVect.nextElement());
     	}
 	
+    	 
 	} catch (ClientProtocolException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -142,6 +143,7 @@ class ConflictThread extends Thread{
 		    	 messages.clear();
 		    	System.out.println("Going to get data&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 		    	getConflictMessagesFromServlet();
+		    	// if (ConflictMessagesView.viewer!=null) ConflictMessagesView.viewer.refresh();
 		    	}
 		    
 		System.out.println("Going to sleep!!!!!!!!!!!!!!!!!!!!!!!!!");
