@@ -108,12 +108,16 @@ public enum ConflictModelProvider {
 	  if (msg !=null)
 	  {
 	  String[] temp1;
+	  String s=null;
+	  int index=0;
 	  String delimiter1 = "[,]";
 	  temp1 = msg.split(delimiter1);
 	  for(int i =0; i < temp1.length ; i++)
 	  {
 	  System.out.println("i=" + i + temp1[i]);
-	  messages.add(temp1[i]);
+	  index= temp1[i].lastIndexOf("#");
+	  s= temp1[i].substring(0, index);
+	  messages.add(s);
 	  }
 	  				
 	  }	

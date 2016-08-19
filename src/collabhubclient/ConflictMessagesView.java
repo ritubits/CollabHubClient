@@ -1,10 +1,14 @@
 package collabhubclient;
 
 
+import java.awt.Component;
+
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.Color;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
@@ -42,8 +46,8 @@ public class ConflictMessagesView extends ViewPart{
 		 viewer.setInput(ConflictModelProvider.INSTANCE.getConflictMessages());
 		 
 		display.getActiveShell();
-		  Color yellow = display.getSystemColor(SWT.COLOR_YELLOW);
-		    Color blue = display.getSystemColor(SWT.COLOR_CYAN);
+	//	  Color yellow = display.getSystemColor(SWT.COLOR_YELLOW);
+	//	    Color blue = display.getSystemColor(SWT.COLOR_CYAN);
 		    
 		
 		TableColumn column21 = new TableColumn(table, SWT.CENTER);
@@ -64,6 +68,25 @@ public class ConflictMessagesView extends ViewPart{
 		    return viewer;
 		  }
 
+	 class MyTableCellRenderer extends DefaultTableCellRenderer//implements TableCellRenderer
+	 {
+	 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col)
+	 {
+	 Component c = super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,col);
+	 //setBackground((Color)value);
+	 if(isSelected)
+	 {
+	 c.setBackground(Color.GRAY);
+	 }
+	 else
+	 {
+	 c.setBackground(Color.cyan);
+	 }
+	 return c;
+	 }
+	 }
 }
+
+
 
 
