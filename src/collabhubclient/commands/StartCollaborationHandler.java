@@ -224,7 +224,7 @@ public String getCurrentFileName() throws FileNotFoundException
 		{
 			String name=null;
 			try{
-				if (activePage !=null)
+				if (activePage !=null && (activePage.getActiveEditor()!=null) && (activePage.getActiveEditor().getEditorInput() !=null))
 				  name = activePage.getActiveEditor().getEditorInput().getName();
 				if (DEBUG) System.out.println("CurrentFileName:: "+name);
 
