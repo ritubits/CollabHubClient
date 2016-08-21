@@ -327,8 +327,24 @@ public String getCurrentMethod()
 		        if (element !=null)
 		        {
 			        if(element.getElementType() == IJavaElement.METHOD){
-			            return element.getElementName();			            			 
-			        }			        
+			            return ("Method: "+element.getElementName()+"()");			            			 
+			        }	
+			        
+			        if(element.getElementType() == IJavaElement.FIELD){
+			            return ("Field: "+element.getElementName());			            			 
+			        }
+			        
+			        if(element.getElementType() == IJavaElement.IMPORT_DECLARATION){
+			            return ("Import: "+element.getElementName());			            			 
+			        }
+			        
+			        if(element.getElementType() == IJavaElement.PACKAGE_DECLARATION){
+			            return ("Package: "+element.getElementName());			            			 
+			        }
+			        
+			        if(element.getElementType() == IJavaElement.LOCAL_VARIABLE){
+			            return ("Local Variable: "+element.getElementName());			            			 
+			        }
 		        }
 		    } catch (JavaModelException e) {
 		        e.printStackTrace();

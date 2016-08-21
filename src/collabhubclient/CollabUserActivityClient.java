@@ -119,7 +119,7 @@ public class CollabUserActivityClient {
 	
 	public File writeToTempFile(String fileContent)
 	{
-		File tempFile= new File("D://temp.java");		
+		File tempFile= new File("D://temp_"+collabName+".java");		
 
 			try
 			{				

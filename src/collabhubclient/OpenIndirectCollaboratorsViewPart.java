@@ -1,74 +1,122 @@
 package collabhubclient;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.part.ViewPart;
+  
 
-public class OpenIndirectCollaboratorsViewPart extends ViewPart{
+public class OpenIndirectCollaboratorsViewPart  extends ViewPart{
 
-	boolean DEBUG= false;
-	public OpenIndirectCollaboratorsViewPart()
+	boolean DEBUG= true;
+	 public static TableViewer viewer;
+	public OpenIndirectCollaboratorsViewPart  ()
 	{
 		super();
 	}
 	
 	@Override
 	public void createPartControl(Composite parent) {
-		// TODO Auto-generated method stub
-		
-		Table table = new Table(parent, SWT.SINGLE);
+
+		 viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
+			        | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+		 
+		 final Table table = viewer.getTable();
+		 
+	//	Table table = new Table(parent, SWT.SINGLE);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-
-		TableColumn column1 = new TableColumn(table, SWT.LEFT);
-		column1.setWidth(150);
-		column1.setText("Name of the Collaborator");
 		
+		 viewer.setContentProvider(new ArrayContentProvider());
+		 
+		 getSite().setSelectionProvider(viewer);
+		 
+		Display display= table.getDisplay();
 		
-		TableColumn column2 = new TableColumn(table, SWT.LEFT);
-		column2.setWidth(80);
-		column2.setText("Artifact Name:1");
-		
-		TableColumn column3 = new TableColumn(table, SWT.LEFT);
-		column3.setWidth(80);
-		column3.setText("Artifact Name:2");
-		
-		TableColumn column4 = new TableColumn(table, SWT.LEFT);
-		column4.setWidth(80);
-		column4.setText("Artifact Name:3");
-		
-		TableColumn column5 = new TableColumn(table, SWT.LEFT);
-		column5.setWidth(80);
-		column5.setText("Artifact Name:4");
-			
-		TableColumn column6 = new TableColumn(table, SWT.LEFT);
-		column6.setWidth(80);
-		column6.setText("Artifact Name:5");
-		
-		TableItem row1 = new TableItem(table, SWT.NONE);
-		TableItem row2 = new TableItem(table, SWT.NONE);
-		TableItem row3 = new TableItem(table, SWT.NONE);		
-		TableItem row4 = new TableItem(table, SWT.NONE);		
-		TableItem row5 = new TableItem(table, SWT.NONE);
-
-
-		row1.setText(new String[] { "Vinita", "triangle.java", "sqaure.java", "rectangle.java", "circle.java" });
-		row2.setText(new String[] { "Shikhar","triangle.java","isosceles.java","square.java" });
-		row3.setText(new String[] { "Shekhar","square.java"});
-		row4.setText(new String[] { "Mihir","triangle.java","equilateral.java","circle.java" });
-		
-
-		
-		
+		 viewer.setInput(OpenIndirectCollaboratorModelProvider.INSTANCE.getCollaborators());
+		 
+		display.getActiveShell();
+    
+		createColumns(parent,viewer);
 	}
 
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
-		
+		  viewer.getControl().setFocus();
+		  if (viewer!=null) viewer.refresh();
 	}
+	
+	 public TableViewer getViewer() {
+		    return viewer;
+		  }
+	 
+	 
+	 private void createColumns(final Composite parent, final TableViewer viewer) {
+		    String[] titles = { "Name of the Collaborator", "Artifact Name::1", "Artifact Name::2", "Artifact Name::3", "Artifact Name::4" };
+		    int[] bounds = { 200, 200, 100 };
 
+		    // first column is for the Name of the Collaborator
+		    TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
+		    col.setLabelProvider(new ColumnLabelProvider() {
+		      @Override
+		      public String getText(Object element) {
+		        String s = (String) element;
+		        System.out.println("STRING::: "+s);
+		        int index= s.indexOf(",");
+		        System.out.println("STRING INDEX::: "+index);
+		        if (index != -1) s= s.substring(0, index);
+		        return s;
+		      }
+		    });
+
+		    // second column is for the Current AST Element
+		    col = createTableViewerColumn(titles[1], bounds[1], 1);
+		    col.setLabelProvider(new ColumnLabelProvider() {
+		      @Override
+		      public String getText(Object element) {
+		    	  String s = (String) element;
+			        int index= s.indexOf(",");
+			        if (index != -1) s= s.substring(index+1, s.length());
+			        index= s.indexOf(",");
+			        if (index != -1) s= s.substring(0, index);
+			        return s;
+		      }
+		    });
+
+		    // Current Line No.
+		    col = createTableViewerColumn(titles[2], bounds[2], 2);
+		    col.setLabelProvider(new ColumnLabelProvider() {
+		      @Override
+		      public String getText(Object element) {
+		    	  String s = (String) element;
+			        int index= s.indexOf(",");
+			        if (index != -1) s= s.substring(index+1, s.length());
+			        index= s.indexOf(",");
+			        if (index != -1) s= s.substring(index+1, s.length());
+			        index= s.indexOf(",");
+			        if (index != -1) s= s.substring(0, index);
+			        return ("Line No:: "+s);
+		      }
+		    });
+
+		  }
+
+	  private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber) {
+		    final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
+		    final TableColumn column = viewerColumn.getColumn();
+		    column.setText(title);
+		    column.setWidth(bound);
+		    column.setResizable(true);
+		    column.setMoveable(true);
+		    return viewerColumn;
+		  }
 }
+
+

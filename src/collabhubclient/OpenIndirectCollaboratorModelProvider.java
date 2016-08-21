@@ -12,40 +12,40 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
 
-public enum ConflictModelProvider {
+public enum OpenIndirectCollaboratorModelProvider {
   INSTANCE;
 
-  private ArrayList<String> messages;
+  private ArrayList<String> collaborators;
   CloseableHttpClient collabClient=null;
   String ipAddTomcat =null;
   String collabName=null;
   HttpEntity entity=null;
   
-  private ConflictModelProvider() {
-    messages = new ArrayList<String>();
+  private OpenIndirectCollaboratorModelProvider() {
+	  collaborators = new ArrayList<String>();
     
-    if (collabClient == null) messages.add("Collaboration Not Started");
+    if (collaborators == null) collaborators.add("Collaboration Not Started");
 
     {
     	//create thread here
-    	ConflictThread myThread= new ConflictThread();
+    	CollaboratorThread myThread= new CollaboratorThread();
     	myThread.start();
     }
     
        
   }
 
-  public ArrayList<String> getConflictMessages() {
+  public ArrayList<String> getCollaborators() {
 	  
-	  System.out.println("GetConflictMessages!!!!!!!!!!!!!!!!!!!!!!!!!!!"+messages);
-    return messages;
+	  System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!"+collaborators);
+    return collaborators;
   }
   
-  public void getConflictMessagesFromServlet()
+  public void getCollaboratorsFromServlet()
   {
 
 	//invoke servlet //pass the collabName
-	  HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/ConflictMessagesServlet?cName="+collabName);
+	  HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/OInCServlet?cName="+collabName);
   	
   	CloseableHttpResponse response;
 	try {
@@ -72,7 +72,7 @@ public enum ConflictModelProvider {
     			if (data.equals("null")) 	
     				{
     				System.out.println("Data is null");
-    				projectVector.add("No messages");
+    				projectVector.add("No Collaborators");
     				}
     			else projectVector.add(data);
     		
@@ -108,16 +108,12 @@ public enum ConflictModelProvider {
 	  if (msg !=null)
 	  {
 	  String[] temp1;
-	  String s=null;
-	  int index=0;
-	  String delimiter1 = "[,]";
+	  String delimiter1 = "[|]";
 	  temp1 = msg.split(delimiter1);
 	  for(int i =0; i < temp1.length ; i++)
 	  {
 	  System.out.println("i=" + i + temp1[i]);
-	//  index= temp1[i].lastIndexOf("#");
-	//  s= temp1[i].substring(0, index);
-	  messages.add(temp1[i]);
+	  collaborators.add(temp1[i]);
 	  }
 	  				
 	  }	
@@ -125,17 +121,17 @@ public enum ConflictModelProvider {
   }
   
 
-class ConflictThread extends Thread{
+class CollaboratorThread extends Thread{
 	
 	 public void run(){  
 		 
 		 while (true)
 		 {
-			 messages.clear();
+			 collaborators.clear();
 		 try {
 		    if (collabClient ==null)
 		    {
-		    	messages.add("Collaboration Not Started");
+		    	collaborators.add("No Collaborators");
 		    	collabClient= StartCollaborationClient.httpclient;
 		        ipAddTomcat=StartCollaborationClient.ipAddTomcat;
 		        collabName=StartCollaborationClient.collabName;
@@ -144,9 +140,9 @@ class ConflictThread extends Thread{
 		    
 		    if (collabClient !=null) 
 		    	{
-		    	 messages.clear();
+		    	collaborators.clear();
 		    	System.out.println("Going to get data&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-		    	getConflictMessagesFromServlet();
+		    	getCollaboratorsFromServlet();
 		    	// if (ConflictMessagesView.viewer!=null) ConflictMessagesView.viewer.refresh();
 		    	}
 		    
