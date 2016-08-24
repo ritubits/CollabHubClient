@@ -327,23 +327,23 @@ public String getCurrentMethod()
 		        if (element !=null)
 		        {
 			        if(element.getElementType() == IJavaElement.METHOD){
-			            return ("Method: "+element.getElementName()+"()");			            			 
+			            return ("M"+element.getElementName()+"()");			            			 
 			        }	
 			        
 			        if(element.getElementType() == IJavaElement.FIELD){
-			            return ("Field: "+element.getElementName());			            			 
+			            return ("F"+element.getElementName());			            			 
 			        }
 			        
 			        if(element.getElementType() == IJavaElement.IMPORT_DECLARATION){
-			            return ("Import: "+element.getElementName());			            			 
+			            return ("I"+element.getElementName());			            			 
 			        }
 			        
 			        if(element.getElementType() == IJavaElement.PACKAGE_DECLARATION){
-			            return ("Package: "+element.getElementName());			            			 
+			            return ("P"+element.getElementName());			            			 
 			        }
 			        
 			        if(element.getElementType() == IJavaElement.LOCAL_VARIABLE){
-			            return ("Local Variable: "+element.getElementName());			            			 
+			            return ("L"+element.getElementName());			            			 
 			        }
 		        }
 		    } catch (JavaModelException e) {

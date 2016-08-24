@@ -7,21 +7,32 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import java.awt.Color;
+import java.net.URL;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
   
 
 public class ConflictMessagesView extends ViewPart{
 
+	
+	private final Image RED_IMAGE = getImage("red.jpg");
+	private final Image ORANGE_IMAGE = getImage("orange.jpg");
+	
 	boolean DEBUG= true;
 	 public static TableViewer viewer;
 	 Display display= null;
@@ -29,6 +40,18 @@ public class ConflictMessagesView extends ViewPart{
 	{
 		super();
 	}
+	
+	private static Image getImage(String file) {
+
+	    // assume that the current class is called View.java
+	  Bundle bundle = FrameworkUtil.getBundle(ConflictMessagesView.class);
+	  URL url = FileLocator.find(bundle, new Path("icons/" + file), null);
+	  ImageDescriptor image = ImageDescriptor.createFromURL(url);
+	  return image.createImage();
+
+	} 
+
+
 	
 	@Override
 	public void createPartControl(Composite parent) {
@@ -98,11 +121,34 @@ public class ConflictMessagesView extends ViewPart{
 
 	 
 	 private void createColumns(final Composite parent, final TableViewer viewer) {
-		    String[] titles = { "Type of  Collaborator","Conflict Message"};
-		    int[] bounds = { 100, 1000 };
+		    String[] titles = { "Severity", "Type of  Collaborator","Conflict Message"};
+		    int[] bounds = { 50, 100, 1000 };
 
 		    // first column is for the Name of the Collaborator
 		    TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
+		    col.setLabelProvider(new ColumnLabelProvider() {
+		      @Override
+		      public String getText(Object element) {
+		        return null;
+		      }
+		      
+		      public Image getImage(Object element) {
+			        String s = (String) element;
+			        System.out.println("STRING::: "+s);
+			        int index1= s.indexOf("#");
+			        int index2= s.indexOf("|");
+			        System.out.println("STRING INDEX::: "+index1);
+			        if (index1 != -1 && index2 != -1) s= s.substring(index1, index2);
+			        
+		    	  if (s.contains("EDC")) {
+		    	    return RED_IMAGE;
+		    	  } 
+		    	  return ORANGE_IMAGE;
+		    	  }
+		    	
+		    });
+
+		    col = createTableViewerColumn(titles[1], bounds[1], 1);
 		    col.setLabelProvider(new ColumnLabelProvider() {
 		      @Override
 		      public String getText(Object element) {
@@ -115,9 +161,8 @@ public class ConflictMessagesView extends ViewPart{
 		        return s;
 		      }
 		    });
-
 		    // second column
-		    col = createTableViewerColumn(titles[1], bounds[1], 1);
+		    col = createTableViewerColumn(titles[2], bounds[2], 2);
 		    col.setLabelProvider(new ColumnLabelProvider() {
 		      @Override
 		      public String getText(Object element) {

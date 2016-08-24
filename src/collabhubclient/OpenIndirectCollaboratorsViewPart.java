@@ -60,7 +60,7 @@ public class OpenIndirectCollaboratorsViewPart  extends ViewPart{
 	 
 	 private void createColumns(final Composite parent, final TableViewer viewer) {
 		    String[] titles = { "Name of the Collaborator", "Artifact Name::1", "Artifact Name::2", "Artifact Name::3", "Artifact Name::4" };
-		    int[] bounds = { 200, 200, 100 };
+		    int[] bounds = { 100, 100, 100, 100, 100 };
 
 		    // first column is for the Name of the Collaborator
 		    TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
@@ -76,7 +76,7 @@ public class OpenIndirectCollaboratorsViewPart  extends ViewPart{
 		      }
 		    });
 
-		    // second column is for the Current AST Element
+		    // artifact 1
 		    col = createTableViewerColumn(titles[1], bounds[1], 1);
 		    col.setLabelProvider(new ColumnLabelProvider() {
 		      @Override
@@ -90,7 +90,7 @@ public class OpenIndirectCollaboratorsViewPart  extends ViewPart{
 		      }
 		    });
 
-		    // Current Line No.
+		    // artifact 2.
 		    col = createTableViewerColumn(titles[2], bounds[2], 2);
 		    col.setLabelProvider(new ColumnLabelProvider() {
 		      @Override
@@ -102,9 +102,48 @@ public class OpenIndirectCollaboratorsViewPart  extends ViewPart{
 			        if (index != -1) s= s.substring(index+1, s.length());
 			        index= s.indexOf(",");
 			        if (index != -1) s= s.substring(0, index);
-			        return ("Line No:: "+s);
+			        return (s);
 		      }
 		    });
+		    
+		    // artifact 3
+		    col = createTableViewerColumn(titles[3], bounds[3], 3);
+		    col.setLabelProvider(new ColumnLabelProvider() {
+		      @Override
+		      public String getText(Object element) {
+		    	  String s = (String) element;
+			        int index= s.indexOf(",");
+			        if (index != -1) s= s.substring(index+1, s.length());
+			        index= s.indexOf(",");
+			        if (index != -1) s= s.substring(index+1, s.length());
+			        index= s.indexOf(",");
+			        if (index != -1) s= s.substring(index+1, s.length());
+			        index= s.indexOf(",");
+			        if (index != -1) s= s.substring(0, index);
+			        return (s);
+		      }
+		    });
+		    
+		    // artifact 3
+		    col = createTableViewerColumn(titles[4], bounds[4], 4);
+		    col.setLabelProvider(new ColumnLabelProvider() {
+		      @Override
+		      public String getText(Object element) {
+		    	  String s = (String) element;
+			        int index= s.indexOf(",");
+			        if (index != -1) s= s.substring(index+1, s.length());
+			        index= s.indexOf(",");
+			        if (index != -1) s= s.substring(index+1, s.length());
+			        index= s.indexOf(",");
+			        if (index != -1) s= s.substring(index+1, s.length());
+			        index= s.indexOf(",");
+			        if (index != -1) s= s.substring(index+1, s.length());
+			        index= s.indexOf(",");
+			        if (index != -1) s= s.substring(0, index);
+			        return (s);
+		      }
+		    });
+
 
 		  }
 

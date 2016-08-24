@@ -107,20 +107,74 @@ public enum OpenIndirectCollaboratorModelProvider {
   {
 	  if (msg !=null)
 	  {
-	  String[] temp1;
-	  String delimiter1 = "[|]";
-	  temp1 = msg.split(delimiter1);
-	  for(int i =0; i < temp1.length ; i++)
-	  {
-	  System.out.println("i=" + i + temp1[i]);
-	  collaborators.add(temp1[i]);
-	  }
+		  String data= null;
+		  String cName=null;
+		  String fName=null;
+		  
+		  String[] temp1;
+		  String delimiter1 = "[|]";
+		  temp1 = msg.split(delimiter1);
+		  
+		  String[] temp2;
+		  String delimiter2 = "[,]";
+		  
+		  for(int i =0; i < temp1.length ; i++)
+		  {
+ 
+			  temp2 = temp1[i].split(delimiter1);
+			  cName= temp2[0];
+			  fName= temp2[1];
+			  
+			  
+			  if (data !=null && !data.contains(cName)){
+				  collaborators.add(data+"|");
+				  data=null;
+			  }
+			  
+			  if (data ==null)
+			  data = cName+","+fName;
+			  else data = data+","+fName;
+
+	//	  System.out.println("i=" + i + temp1[i]);
+		 
+		  }
 	  				
 	  }	
-	  
+	  System.out.println(collaborators.toString());
+	  parseForFourArtifact(collaborators.toString());
   }
   
-
+  public void parseForFourArtifact(String msg)
+  {
+	  if (msg !=null)
+	  {
+		    
+		  String[] temp1;
+		  String delimiter1 = "[|]";
+		  temp1 = msg.split(delimiter1);
+		  String data=null;
+		  String[] temp2;
+		  String delimiter2 = "[,]";
+		  for(int i =0; i < temp1.length ; i++)
+		  {
+			  int j=0;
+			  data =null;
+			  temp2 = temp1[i].split(delimiter1);
+			  for(j =0; j < temp2.length ; j++)
+			  {
+			  data= temp2[j]+",";
+			  }
+			  
+			  if (j ==2) data= data+ "--"+"--"+"--"+"|";
+			  if (j ==3) data= data+ "--"+"--"+"|";
+			  if (j ==4) data= data+ "--"+"|";
+			  collaborators.add(data);
+			  
+		  }
+	  }
+  }
+  
+  
 class CollaboratorThread extends Thread{
 	
 	 public void run(){  
