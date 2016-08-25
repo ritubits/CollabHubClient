@@ -99,11 +99,39 @@ public class DirectCollaboratorsViewPart  extends ViewPart{
 		      @Override
 		      public String getText(Object element) {
 		    	  String s = (String) element;
+		    	  if ((s.contains("null")) || (s.contains("No Collaborators")))
+		    	  {
+		    		  return s;
+		    	  }
+		    	  else
+		    	  {
+		    		  System.out.println("In AST Element::::::::::::::::::::::::::"+s);
+		    	  String type=null;
 			        int index= s.indexOf(",");
 			        if (index != -1) s= s.substring(index+1, s.length());
 			        index= s.indexOf(",");
 			        if (index != -1) s= s.substring(0, index);
+			        type= s.substring(0, 1);
+			        s= s.substring(1, s.length());
+			        
+			        if (type.contains("M"))
+			        	s= "Method::"+s;
+			        
+			        if (type.contains("F"))
+			        	s= "Field::"+s;
+			        
+			        if (type.contains("I"))
+			        	s= "ImportDec::"+s;
+			        
+			        if (type.contains("P"))
+			        	s= "PackageDec::"+s;
+			        
+			        if (type.contains("L"))
+			        	s= "LocalVar::"+s;
 			        return s;
+		    	  
+		    	  }
+			       
 		      }
 		    });
 

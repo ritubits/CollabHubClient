@@ -30,8 +30,8 @@ import org.osgi.framework.FrameworkUtil;
 public class ConflictMessagesView extends ViewPart{
 
 	
-	private final Image RED_IMAGE = getImage("red.jpg");
-	private final Image ORANGE_IMAGE = getImage("orange.jpg");
+	private final Image RED_IMAGE = getImage("redSmall.jpg");
+	private final Image ORANGE_IMAGE = getImage("orangeSmall.jpg");
 	
 	boolean DEBUG= true;
 	 public static TableViewer viewer;
@@ -45,7 +45,11 @@ public class ConflictMessagesView extends ViewPart{
 
 	    // assume that the current class is called View.java
 	  Bundle bundle = FrameworkUtil.getBundle(ConflictMessagesView.class);
-	  URL url = FileLocator.find(bundle, new Path("icons/" + file), null);
+	  Path imgPath= new Path("images/" + file);
+	  URL url = FileLocator.find(bundle,imgPath, null);
+	  System.out.println("Path for Image::::::::::::::::::::::::::"+imgPath);
+	  System.out.println("url for Image::::::::::::::::::::::::::"+url);
+	 
 	  ImageDescriptor image = ImageDescriptor.createFromURL(url);
 	  return image.createImage();
 
@@ -122,7 +126,7 @@ public class ConflictMessagesView extends ViewPart{
 	 
 	 private void createColumns(final Composite parent, final TableViewer viewer) {
 		    String[] titles = { "Severity", "Type of  Collaborator","Conflict Message"};
-		    int[] bounds = { 50, 100, 1000 };
+		    int[] bounds = { 100, 150, 800 };
 
 		    // first column is for the Name of the Collaborator
 		    TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
@@ -134,12 +138,12 @@ public class ConflictMessagesView extends ViewPart{
 		      
 		      public Image getImage(Object element) {
 			        String s = (String) element;
-			        System.out.println("STRING::: "+s);
+			       
 			        int index1= s.indexOf("#");
 			        int index2= s.indexOf("|");
 			        System.out.println("STRING INDEX::: "+index1);
 			        if (index1 != -1 && index2 != -1) s= s.substring(index1, index2);
-			        
+			        System.out.println("Returining Image::: "+s);
 		    	  if (s.contains("EDC")) {
 		    	    return RED_IMAGE;
 		    	  } 

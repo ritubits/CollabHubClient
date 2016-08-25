@@ -60,7 +60,7 @@ public class OpenIndirectCollaboratorsViewPart  extends ViewPart{
 	 
 	 private void createColumns(final Composite parent, final TableViewer viewer) {
 		    String[] titles = { "Name of the Collaborator", "Artifact Name::1", "Artifact Name::2", "Artifact Name::3", "Artifact Name::4" };
-		    int[] bounds = { 100, 100, 100, 100, 100 };
+		    int[] bounds = { 200, 150, 150, 150, 150 };
 
 		    // first column is for the Name of the Collaborator
 		    TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
