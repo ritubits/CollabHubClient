@@ -107,6 +107,7 @@ public enum DirectCollaboratorModelProvider {
   {
 	  if (msg !=null)
 	  {
+		  System.out.println("Data from EDC Servlet"+msg);
 	  String[] temp1;
 	  String delimiter1 = "[|]";
 	  temp1 = msg.split(delimiter1);

@@ -99,18 +99,32 @@ public class DirectCollaboratorsViewPart  extends ViewPart{
 		      @Override
 		      public String getText(Object element) {
 		    	  String s = (String) element;
-		    	  if ((s.contains("null")) || (s.contains("No Collaborators")))
+		    	  if (s.contains("null"))
 		    	  {
-		    		  return s;
+		    		  return "Null";
 		    	  }
-		    	  else
+		    	  if (s.contains("Null"))
+		    	  {
+		    		  return "Null";
+		    	  }
+		    	  if (s.contains("No Collaborators"))
+		    	  {
+		    		  return "No Collaborators";
+		    	  }
+		    	  
 		    	  {
 		    		  System.out.println("In AST Element::::::::::::::::::::::::::"+s);
 		    	  String type=null;
 			        int index= s.indexOf(",");
 			        if (index != -1) s= s.substring(index+1, s.length());
-			        index= s.indexOf(",");
-			        if (index != -1) s= s.substring(0, index);
+			        
+			     //   index= s.indexOf(",");
+			     //   if (index != -1) s= s.substring(index+1, s.length());
+			       
+			        
+			        int index2= s.indexOf(",");
+			        if ((index2 != -1)) s= s.substring(0, index2);
+			        
 			        type= s.substring(0, 1);
 			        s= s.substring(1, s.length());
 			        

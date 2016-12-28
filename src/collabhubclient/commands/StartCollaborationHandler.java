@@ -269,7 +269,7 @@ public int getCursorPosition()
 	                ITextSelection textSelection = (ITextSelection)selection;
 	                IDocumentProvider provider = ((ITextEditor)editor).getDocumentProvider();
 	                IDocument document = provider.getDocument(editor.getEditorInput());
-	                int line = textSelection.getStartLine();
+	                int line = textSelection.getStartLine()+1;
 	//                int column =0;
 	//                try {
 	//                    column = textSelection.getOffset() - document.getLineOffset(line);

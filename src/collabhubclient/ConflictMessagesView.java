@@ -80,14 +80,6 @@ public class ConflictMessagesView extends ViewPart{
 		 
 		display.getActiveShell();
 		createColumns(parent,viewer);
-	//	  Color yellow = display.getSystemColor(SWT.COLOR_YELLOW);
-	//	    Color blue = display.getSystemColor(SWT.COLOR_CYAN);
-		    
-		
-/*		TableColumn column21 = new TableColumn(table, SWT.CENTER);
-		column21.setWidth(1000);
-		column21.setText("Conflict Message");
-		column21.setMoveable(false);*/
 
 	}
 
@@ -103,27 +95,7 @@ public class ConflictMessagesView extends ViewPart{
 	 public TableViewer getViewer() {
 		    return viewer;
 		  }
-
-	 class MyTableCellRenderer extends DefaultTableCellRenderer//implements TableCellRenderer
-	 {
-	 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col)
-	 {
-	 Component c = super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,col);
-	 //setBackground((Color)value);
-	 if(isSelected)
-	 {
-	 c.setBackground(Color.GRAY);
-	 }
-	 else
-	 {
-	 c.setBackground(Color.cyan);
-	 }
-	 return c;
-	 }
-	 }
-	 
-
-	 
+	 	 
 	 private void createColumns(final Composite parent, final TableViewer viewer) {
 		    String[] titles = { "Severity", "Type of  Collaborator","Conflict Message"};
 		    int[] bounds = { 100, 150, 800 };

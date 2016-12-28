@@ -38,6 +38,7 @@ public enum OpenIndirectCollaboratorModelProvider {
   public ArrayList<String> getCollaborators() {
 	  
 	  System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!"+collaborators);
+
     return collaborators;
   }
   
@@ -105,9 +106,10 @@ public enum OpenIndirectCollaboratorModelProvider {
   
   private void parse(String msg)
   {
+	  String data= null;
 	  if (msg !=null)
 	  {
-		  String data= null;
+		 
 		  String cName=null;
 		  String fName=null;
 		  
@@ -121,25 +123,36 @@ public enum OpenIndirectCollaboratorModelProvider {
 		  for(int i =0; i < temp1.length ; i++)
 		  {
  
-			  temp2 = temp1[i].split(delimiter1);
+			  temp2 = temp1[i].split(delimiter2);
 			  cName= temp2[0];
 			  fName= temp2[1];
+			  System.out.println("cName::"+cName);
+			  System.out.println("fName::"+fName);
+			  System.out.println("data::"+data);
 			  
-			  
-			  if (data !=null && !data.contains(cName)){
+		/*	  if (data !=null && data.contains(cName)){
 				  collaborators.add(data+"|");
-				  data=null;
-			  }
+				  System.out.println("data::"+data);
+				// data=null;
+			  }*/
 			  
 			  if (data ==null)
+			  {
 			  data = cName+","+fName;
-			  else data = data+","+fName;
+			  System.out.println("data::"+data);
+			  }
+			  else 
+				  {
+				  data = data+","+fName;
+				  System.out.println("data::"+data);
+				  }
 
 	//	  System.out.println("i=" + i + temp1[i]);
 		 
 		  }
 	  				
 	  }	
+	  collaborators.add(data);
 	  System.out.println(collaborators.toString());
 	  parseForFourArtifact(collaborators.toString());
   }
@@ -150,29 +163,18 @@ public enum OpenIndirectCollaboratorModelProvider {
 	  {
 		    
 		  String[] temp1;
-		  String delimiter1 = "[|]";
+		  String delimiter1 = "[,]";
 		  temp1 = msg.split(delimiter1);
 		  String data=null;
-		  String[] temp2;
-		  String delimiter2 = "[,]";
-		  for(int i =0; i < temp1.length ; i++)
-		  {
-			  int j=0;
-			  data =null;
-			  temp2 = temp1[i].split(delimiter1);
-			  for(j =0; j < temp2.length ; j++)
-			  {
-			  data= temp2[j]+",";
-			  }
-			  
-			  if (j ==2) data= data+ "--"+"--"+"--"+"|";
-			  if (j ==3) data= data+ "--"+"--"+"|";
-			  if (j ==4) data= data+ "--"+"|";
-			  collaborators.add(data);
-			  
+		  int j=temp1.length;
+		  if (j ==1) data= data+ "--"+"--"+"--"+"--";
+		  if (j ==2) data= data+ "--"+"--"+"--";
+		  if (j ==3) data= data+ "--"+"--";
+		  if (j ==4) data= data+ "--";
+		  collaborators.add(data);
 		  }
 	  }
-  }
+  
   
   
 class CollaboratorThread extends Thread{

@@ -37,7 +37,6 @@ public enum SemiDirectModelProvider {
 
   public ArrayList<String> getCollaborators() {
 	  
-	  System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!"+collaborators);
     return collaborators;
   }
   

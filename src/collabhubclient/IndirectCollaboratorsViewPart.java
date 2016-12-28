@@ -133,17 +133,27 @@ public class IndirectCollaboratorsViewPart  extends ViewPart{
 		      @Override
 		      public String getText(Object element) {
 		    	  String s = (String) element;
-		    	  if (s.contains("null") || (s.contains("No Collaborators")))
+		    	  if (s.contains("null"))
 		    	  {
-		    		  return s;
+		    		  return "null";
 		    	  }
-		    	  else
+		    	  if (s.contains("No Collaborators"))
+		    	  {
+		    		  return "No Collaborators";
+		    	  }
+		    	  
 		    	  {
 		    	  String type=null;
 			        int index= s.indexOf(",");
 			        if (index != -1) s= s.substring(index+1, s.length());
+			        
 			        index= s.indexOf(",");
-			        if (index != -1) s= s.substring(0, index);
+			        if (index != -1) s= s.substring(index+1, s.length());
+			       
+			        
+			        int index2= s.indexOf(",");
+			        if ((index2 != -1)) s= s.substring(0, index2);
+			        
 			        type= s.substring(0, 1);
 			        s= s.substring(1, s.length());
 			        
@@ -181,7 +191,7 @@ public class IndirectCollaboratorsViewPart  extends ViewPart{
 			        index= s.indexOf(",");
 			        if (index != -1) s= s.substring(0, index);
 
-			        return s;
+			        return "LineNo::"+s;
 		      }
 		    });
 

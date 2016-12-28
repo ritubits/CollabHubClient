@@ -37,7 +37,6 @@ public enum IndirectCollaboratorModelProvider {
 
   public ArrayList<String> getIndirectCollaborators() {
 	  
-	  System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!"+collaborators);
     return collaborators;
   }
   

@@ -36,8 +36,6 @@ public enum ConflictModelProvider {
   }
 
   public ArrayList<String> getConflictMessages() {
-	  
-	  System.out.println("GetConflictMessages!!!!!!!!!!!!!!!!!!!!!!!!!!!"+messages);
     return messages;
   }
   
