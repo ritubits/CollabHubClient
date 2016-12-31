@@ -2,31 +2,20 @@ package collabhubclient.commands;
 
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Vector;
+
+import javax.inject.Inject;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.progress.UIJob;
-import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-
-import collabhubclient.CollabUserActivity;
-import collabhubclient.CollabUserActivityClient;
-import collabhubclient.StartCollaborationClient;
-import collabhubclient.StartCollaborationForm;
-
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaModelException;
@@ -41,7 +30,19 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.progress.UIJob;
+import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.texteditor.ITextEditor;
 
+import collabhubclient.CollabUserActivity;
+import collabhubclient.CollabUserActivityClient;
+import collabhubclient.StartCollaborationClient;
+import collabhubclient.StartCollaborationForm;
 
 
 public class StartCollaborationHandler implements IHandler {
@@ -57,6 +58,10 @@ public class StartCollaborationHandler implements IHandler {
 	boolean compilable=false;
 	static CollabUserActivityClient userClient;
 	static ExecutionEvent eventObject;
+	
+	private BrokerProvider provider = new BrokerProvider();
+	
+	
 	public void addHandlerListener(IHandlerListener handlerListener) {
 		// TODO Auto-generated method stub
 
@@ -68,6 +73,7 @@ public class StartCollaborationHandler implements IHandler {
 		// TODO Auto-generated method stub
 
 	}
+
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -100,27 +106,36 @@ public class StartCollaborationHandler implements IHandler {
 		workbench = PlatformUI.getWorkbench();
 
 		activePage = workbench.getActiveWorkbenchWindow().getActivePage();
+		HashMap<String, Object> argmaps = new HashMap<>();
+		argmaps.put("activepage", activePage);
+		argmaps.put("client", userClient);
+		provider.getBroker().post(CollabEventsConstants.COLLAB_TOPIC_START, argmaps);
 
+	//	Timer time = new Timer(); // Instantiate Timer Object
+	///	ScheduledUITask st = new ScheduledUITask(userClient, activePage); // Instantiate SheduledTask class
+	//	time.schedule(st, 0, 1000*60*1); // Create Repetitively task for every 1 secs
 		
-		
-		if (activePage.CHANGE_EDITOR_CLOSE != null)
-		{
-			
-		}
-		  Job job = new Job("Activity Job") {
+		/*  Job job = new Job("Activity Job") {
 	
 		      protected IStatus run(IProgressMonitor monitor) {
 		        getUserActivityData();
-		    
-		        syncUI();
+		        try {
+		        	Thread.sleep(1000*60*1);//1 minutes 
+
+		        	} catch (InterruptedException e) {
+		        		e.printStackTrace();
+		        	} 
+		      //  syncUI();
 		       
-				if (StartCollaborationClient.httpclient != null) return Status.OK_STATUS;
-				else return Status.CANCEL_STATUS;
+				if ((StartCollaborationClient.httpclient != null) && (!monitor.isCanceled()))
+					return Status.OK_STATUS;
+				else 
+					return Status.CANCEL_STATUS;
 		      }
 
-		    };
-		    job.setUser(true);
-		    job.schedule();
+		    };*/
+		   // job.setUser(true);
+		  //  job.schedule();
 		
 				return null;
 	}
@@ -130,7 +145,7 @@ public class StartCollaborationHandler implements IHandler {
 		  
 		  CollabUserActivity userObject = new CollabUserActivity();
 
-		  while (true)
+	//	  while (true)
 		  {
 		      try {
 		    	  compilable= false;

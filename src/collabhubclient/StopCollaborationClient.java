@@ -13,7 +13,7 @@ import collabhubclient.StartCollaborationClient;
 
 public class StopCollaborationClient {
 	
-	boolean DEBUG= false;
+	boolean DEBUG= true;
 	HttpEntity entity=null;
 	
 	String projectName;
@@ -80,7 +80,8 @@ public class StopCollaborationClient {
 		    	Enumeration enumVect = projectVector.elements();
 		    	while (enumVect.hasMoreElements())
 		    	{
-		    		if (DEBUG) System.out.println("From servlet: "+enumVect.nextElement());
+		    		
+		    		System.out.println("From servlet: "+enumVect.nextElement());
 		    	}
 		    	
 	    	//check if returned status is not correct
@@ -97,6 +98,7 @@ public class StopCollaborationClient {
 		{
 			
 			collabClient.close();
+			StartCollaborationClient.httpclient=null;
 		}
 		catch (Exception e)
 		{

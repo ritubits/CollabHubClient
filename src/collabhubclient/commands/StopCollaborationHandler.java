@@ -15,6 +15,7 @@ public class StopCollaborationHandler implements IHandler {
 
 	static Boolean success= false;
 	boolean DEBUG= false;
+	private BrokerProvider provider = new BrokerProvider();
 	
 	public void addHandlerListener(IHandlerListener handlerListener) {
 		// TODO Auto-generated method stub
@@ -37,8 +38,10 @@ public class StopCollaborationHandler implements IHandler {
 
 		if (DEBUG) System.out.println("In StopCollaborationHandler");
 		
+		
 		try
 		{
+			provider.getBroker().post(CollabEventsConstants.COLLAB_TOPIC_CLOSE, 1);
 		StopCollaborationClient collab = new StopCollaborationClient();
 			
 		Boolean status= collab.executeClient();
