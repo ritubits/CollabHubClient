@@ -87,11 +87,11 @@ public class StartCollaborationHandler implements IHandler {
 		
 		if (DEBUG) System.out.println("Before collabStarted in Handlers:: "+success);
 		
-		while (!success)
+	/*	while (!success)
 		{
 			success = eForm.getCollabStatus();
 			if (DEBUG) System.out.println("collabStarted in Handlers:: "+success);
-		}
+		}*/
 		
 		//		reaches here when collabStarted
 	/*	try {

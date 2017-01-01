@@ -96,5 +96,9 @@
             restorable="true">
       </view>
    </extension>
-
+	<extension point="org.eclipse.ui.preferencePages">
+		<page name="StartCollaborationUI"
+		class="collabhubclient.commands.StartCollabPreferencePage"
+		id="collabhubclient.commands.preference.page"/>
+	</extension>
 </plugin>

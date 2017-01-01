@@ -5,6 +5,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -61,6 +62,15 @@ public class Activator extends AbstractUIPlugin {
 
 			  job.schedule();
 			 
+			  String projectName="Project Name";
+			  String collabName="Collaborator Name";
+			  String tomcatIP="localhost:8080";
+			  String mySQLIP="localhost:3306";
+			  getPreferenceStore().setValue("projectName",projectName);
+			  getPreferenceStore().setValue("collabName",collabName);
+			  getPreferenceStore().setValue("tomcatIP",tomcatIP);
+			  getPreferenceStore().setValue("mySQLIP",mySQLIP);
+
 	}
 
 	/*
@@ -80,5 +90,7 @@ public class Activator extends AbstractUIPlugin {
 	public static Activator getDefault() {
 		return plugin;
 	}
+	
+
 
 }
