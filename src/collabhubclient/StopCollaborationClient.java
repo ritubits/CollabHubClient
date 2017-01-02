@@ -97,7 +97,7 @@ public class StopCollaborationClient {
 		try
 		{
 			
-			collabClient.close();
+			if (collabClient!=null) collabClient.close();
 			StartCollaborationClient.httpclient=null;
 		}
 		catch (Exception e)

@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Vector;
 
-import javax.inject.Inject;
+import javax.swing.JOptionPane;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaModelException;
@@ -39,6 +38,7 @@ import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import collabhubclient.Activator;
 import collabhubclient.CollabUserActivity;
 import collabhubclient.CollabUserActivityClient;
 import collabhubclient.StartCollaborationClient;
@@ -57,6 +57,8 @@ public class StartCollaborationHandler implements IHandler {
 	int lineNo;
 	boolean compilable=false;
 	static CollabUserActivityClient userClient;
+	static StartCollaborationClient collabClient = null;
+	static String regProjectName= null;
 	static ExecutionEvent eventObject;
 	
 	private BrokerProvider provider = new BrokerProvider();
@@ -74,6 +76,12 @@ public class StartCollaborationHandler implements IHandler {
 
 	}
 
+	public StartCollaborationClient getCollabClient()
+	{
+		//after starting collaboration
+		//all should use this client
+		return collabClient;
+	}
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -81,11 +89,54 @@ public class StartCollaborationHandler implements IHandler {
 
 		eventObject= event;
 		if (DEBUG) System.out.println("In StartCollaboration handler");
-		StartCollaborationForm eForm= new StartCollaborationForm();
-		success= eForm.executeForm();
-		if (DEBUG) System.out.println("In StartCollaboration handler");
 		
-		if (DEBUG) System.out.println("Before collabStarted in Handlers:: "+success);
+		String projectName=Activator.getDefault().getPreferenceStore().getString("projectName");
+		String collabName=Activator.getDefault().getPreferenceStore().getString("collabName");
+		String tomcatIP=Activator.getDefault().getPreferenceStore().getString("tomcatIP");
+		String mySQLIP=Activator.getDefault().getPreferenceStore().getString("mySQLIP");
+		  
+		System.out.println(projectName);
+		System.out.println(collabName);
+		System.out.println(tomcatIP);
+		System.out.println(mySQLIP);
+		
+		if (projectName.equals("null") || collabName.equals("null"))
+		{
+			JOptionPane.showMessageDialog(null, "Project Name or Collaborator Name is NULL : Set using Windows -> Preferences -> CollabHub Connection Parameters", "Message Info", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else
+		{
+		JOptionPane.showMessageDialog(null, "Using Parameters:: Project Name: "+projectName+" Collaborator Name: "+collabName, "Message Info", JOptionPane.INFORMATION_MESSAGE);
+
+		
+		try {
+			collabClient= new StartCollaborationClient();
+			collabClient.setConfigProjectValues(projectName, collabName,tomcatIP,mySQLIP);
+			
+			boolean done = collabClient.createCollabClient();
+			// if client created
+			if (done)
+			{
+				boolean status= collabClient.updateUserTable();
+				if (status)
+				{
+					regProjectName = projectName;
+					JOptionPane.showMessageDialog(null, "Successfully Connected to CollabHub", "Message Info", JOptionPane.INFORMATION_MESSAGE);
+					
+				}
+				else 
+					JOptionPane.showMessageDialog(null, "Unable to connect to CollabHub", "Message Info", JOptionPane.INFORMATION_MESSAGE);
+			}
+		
+		
+
+
+		
+	//	StartCollaborationForm eForm= new StartCollaborationForm();
+	//	success= eForm.executeForm();
+	//	if (DEBUG) System.out.println("In StartCollaboration handler");
+		
+	//	if (DEBUG) System.out.println("Before collabStarted in Handlers:: "+success);
 		
 	/*	while (!success)
 		{
@@ -100,12 +151,12 @@ public class StartCollaborationHandler implements IHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		if (DEBUG) System.out.println("collabStarted outside Handlers:: "+success);
-		userClient = new CollabUserActivityClient();
+
 		  
 		workbench = PlatformUI.getWorkbench();
 
 		activePage = workbench.getActiveWorkbenchWindow().getActivePage();
+		userClient = new CollabUserActivityClient();
 		HashMap<String, Object> argmaps = new HashMap<>();
 		argmaps.put("activepage", activePage);
 		argmaps.put("client", userClient);
@@ -137,6 +188,14 @@ public class StartCollaborationHandler implements IHandler {
 		   // job.setUser(true);
 		  //  job.schedule();
 		
+		
+		}catch (Exception ex)
+		{
+			if (DEBUG) System.out.println("Error calling collabClient");
+			JOptionPane.showMessageDialog(null, "Unable to connect to CollabHub", "Message Info", JOptionPane.INFORMATION_MESSAGE);
+			ex.printStackTrace();
+		}
+		}
 				return null;
 	}
 
@@ -176,7 +235,7 @@ public class StartCollaborationHandler implements IHandler {
 			    	}
 			    	
 
-			        Thread.sleep(1000*20);// pick activity data info every 20 second
+			      //  Thread.sleep(1000*20);// pick activity data info every 20 second
 			    	
 		      } catch (Exception e) {
 		        e.printStackTrace();

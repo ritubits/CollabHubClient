@@ -18,7 +18,7 @@ public class EntryFormRegProject {
 	static Boolean registerSuceed = false;
 	static String regProjectName= null;
 		
-		public EntryFormRegProject()
+/*		public EntryFormRegProject()
 		{
 			regObject= new RegProjectClient();
 		}
@@ -155,6 +155,6 @@ public class EntryFormRegProject {
 
 	}// add components
 	
-
+*/
 
 }

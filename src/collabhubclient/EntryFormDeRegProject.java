@@ -17,7 +17,7 @@ public class EntryFormDeRegProject {
 	static DeRegProjectClient deRegObject = null;
 	
 		
-		public EntryFormDeRegProject()
+/*		public EntryFormDeRegProject()
 		{
 			deRegObject= new DeRegProjectClient();
 		}
@@ -145,6 +145,6 @@ public class EntryFormDeRegProject {
 
 	}// add components
 	
-
+*/
 
 }

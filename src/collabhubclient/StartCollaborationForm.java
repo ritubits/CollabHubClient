@@ -12,25 +12,25 @@ import java.awt.event.ActionEvent;
 import collabhubclient.StartCollaborationClient;
 
 public class StartCollaborationForm {
-
+/*
 	static boolean DEBUG= false;
-	static StartCollaborationClient collabClient = null;
+//	static StartCollaborationClient collabClient = null;
 	static Boolean registerSuceed = false;
-	static String regProjectName= null;
+	//static String regProjectName= null;
 		
 		public StartCollaborationForm()
 		{
-			collabClient= new StartCollaborationClient();
+	//		collabClient= new StartCollaborationClient();
 		}
 		
-		public StartCollaborationClient getCollabClient()
+/*		public StartCollaborationClient getCollabClient()
 		{
 			//after starting collaboration
 			//all should use this client
 			return collabClient;
-		}
+		}*/
 		
-		public Boolean getCollabStatus()
+/*		public Boolean getCollabStatus()
 		{
 			return registerSuceed;
 		}
@@ -150,7 +150,7 @@ public class StartCollaborationForm {
 								ee.printStackTrace();
 							}
 							*/
-						}//finally
+			/*			}//finally
 						}//if
 						else
 							JOptionPane.showMessageDialog(null, "Unable to connect to CollabHub", "Message Info", JOptionPane.INFORMATION_MESSAGE);
@@ -170,5 +170,5 @@ public class StartCollaborationForm {
 	}// add components
 	
 
-
+*/
 }

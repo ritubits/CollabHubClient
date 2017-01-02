@@ -97,8 +97,13 @@
       </view>
    </extension>
 	<extension point="org.eclipse.ui.preferencePages">
-		<page name="StartCollaborationUI"
+		<page name="CollabHub Connection Parameters"
 		class="collabhubclient.commands.StartCollabPreferencePage"
+		id="collabhubclient.commands.preference.page"/>
+	</extension>
+		<extension point="org.eclipse.ui.preferencePages">
+		<page name="CollabHub Registration Parameters"
+		class="collabhubclient.commands.RegCollabPreferencePage"
 		id="collabhubclient.commands.preference.page"/>
 	</extension>
 </plugin>
