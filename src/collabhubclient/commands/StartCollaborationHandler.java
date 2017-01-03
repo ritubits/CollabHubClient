@@ -159,6 +159,7 @@ public class StartCollaborationHandler implements IHandler {
 		userClient = new CollabUserActivityClient();
 		HashMap<String, Object> argmaps = new HashMap<>();
 		argmaps.put("activepage", activePage);
+		argmaps.put("workbench", workbench);
 		argmaps.put("client", userClient);
 		provider.getBroker().post(CollabEventsConstants.COLLAB_TOPIC_START, argmaps);
 

@@ -34,8 +34,9 @@ public class JobSchedulerClass implements EventHandler {
 			if (task == null) {
 				CollabUserActivityClient userClient = (CollabUserActivityClient) arg0
 						.getProperty("client");
-				IWorkbenchPage activePage = (IWorkbenchPage) arg0
-						.getProperty("activepage");
+				IWorkbench workbench = (IWorkbench) arg0
+						.getProperty("workbench");
+				 IWorkbenchPage activePage = workbench.getActiveWorkbenchWindow().getActivePage();
 				task = new ScheduledUITask(userClient, activePage);
 			}
 
