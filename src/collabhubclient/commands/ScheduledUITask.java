@@ -47,7 +47,7 @@ public class ScheduledUITask extends Job {
 	IWorkbenchPage activePage = null;
 	private UIJob activityMethodDataJob;
 	private UIJob activityLineDataJob;
-	private static final int RESCHEDULE_TIME = 60 * 1000 * 1;
+	private static final int RESCHEDULE_TIME = 60 * 1000 * 1;//every minute
 	private boolean running = true;
 
 	public ScheduledUITask(CollabUserActivityClient uClient,
@@ -104,6 +104,7 @@ public class ScheduledUITask extends Job {
 				Thread.sleep(1000 * 20);// pick activity data info every 20
 										// second
 
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -112,6 +113,8 @@ public class ScheduledUITask extends Job {
 		}
 	}
 
+	
+			
 	public String getCurrentFileName() throws FileNotFoundException {
 		String name = null;
 		try {

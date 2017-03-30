@@ -7,9 +7,12 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.swt.widgets.Listener;
   
 
 public class DirectCollaboratorsViewPart  extends ViewPart{
@@ -24,7 +27,7 @@ public class DirectCollaboratorsViewPart  extends ViewPart{
 	@Override
 	public void createPartControl(Composite parent) {
 
-		 viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
+		 viewer = new TableViewer(parent, SWT.SINGLE | SWT.H_SCROLL
 			        | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		 
 		 final Table table = viewer.getTable();
@@ -44,23 +47,16 @@ public class DirectCollaboratorsViewPart  extends ViewPart{
 		display.getActiveShell();
     
 		createColumns(parent,viewer);
-/*		TableColumn column1 = new TableColumn(table, SWT.LEFT);
-		column1.setWidth(200);
-		column1.setText("Name of the Collaborator");
-		column1.setMoveable(false);
 		
-		TableColumn column2 = new TableColumn(table, SWT.LEFT);
-		column2.setWidth(200);
-		column2.setText("Current AST Element");
-		column2.setMoveable(false);
-		
-		TableColumn column3 = new TableColumn(table, SWT.LEFT);	
-		column3.setWidth(100);
-		column3.setText("Current Line No.");
-		column2.setMoveable(false);
-		*/
-		//	row1.setText(new String[] { "Heena", "Method::setData()", "Line No:: 12" });
-		//	row2.setText(new String[] { "Sagar", "Method::fillColor()", "Line No:: 62" });
+		table.addListener(SWT.DefaultSelection, new Listener() {
+		      public void handleEvent(Event e) {
+		        String string = "";
+		        TableItem[] selection = table.getSelection();
+		        for (int i = 0; i < selection.length; i++)
+		          string += selection[i] + " ";
+		        System.out.println("DefaultSelection={" + string + "}");
+		      }
+		    });
 	}
 
 	@Override
@@ -101,11 +97,13 @@ public class DirectCollaboratorsViewPart  extends ViewPart{
 		    	  String s = (String) element;
 		    	  if (s.contains("null"))
 		    	  {
-		    		  return "Null";
+		    		  return "---";
+		    		//  return "Null";
 		    	  }
 		    	  if (s.contains("Null"))
 		    	  {
-		    		  return "Null";
+		    		  return "---";
+		    		  //return "Null";
 		    	  }
 		    	  if (s.contains("No Collaborators"))
 		    	  {
@@ -164,7 +162,7 @@ public class DirectCollaboratorsViewPart  extends ViewPart{
 			        return ("Line No:: "+s);
 		      }
 		    });
-
+			  if (viewer!=null) getViewer().refresh();
 		  }
 
 	  private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber) {

@@ -189,6 +189,8 @@ public class StartCollaborationHandler implements IHandler {
 		   // job.setUser(true);
 		  //  job.schedule();
 		
+		//set the content of the eclipse IDE for simulation
+		setCurrentWorkSpaceContent();
 		
 		}catch (Exception ex)
 		{
@@ -200,6 +202,27 @@ public class StartCollaborationHandler implements IHandler {
 				return null;
 	}
 
+	public void setCurrentWorkSpaceContent()
+	{
+	
+		IAdaptable editorPart = null;
+
+		IEditorPart activeEditor = activePage.getActiveEditor();
+
+		if (activeEditor instanceof JavaEditor) {
+			ITextEditor editor = (ITextEditor) activeEditor
+					.getAdapter(ITextEditor.class);
+
+			if (editor != null) {
+				IDocumentProvider provider = editor.getDocumentProvider();
+				IDocument document = provider.getDocument(editor
+						.getEditorInput());
+				document.set("New file Content");
+				if (DEBUG)
+					System.out.println("file Content::" + document.get());
+			}
+		}
+	}
 	
 	  private void getUserActivityData() {
 		  

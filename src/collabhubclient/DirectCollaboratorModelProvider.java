@@ -47,9 +47,9 @@ public enum DirectCollaboratorModelProvider {
 	//invoke servlet //pass the collabName
 	  HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/EDCServlet?cName="+collabName);
   	
-  	CloseableHttpResponse response;
+  	CloseableHttpResponse response=null;
 	try {
-		response = collabClient.execute(httpget);
+	if (collabClient!=null)	{response = collabClient.execute(httpget);}
 	  		
 	System.out.println(response.getProtocolVersion());
 	System.out.println(response.getStatusLine().getStatusCode());
@@ -144,7 +144,7 @@ class CollaboratorThread extends Thread{
 		    	collaborators.clear();
 		    	System.out.println("Going to get data&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 		    	getCollaboratorsFromServlet();
-		    	// if (ConflictMessagesView.viewer!=null) ConflictMessagesView.viewer.refresh();
+		    //	if (DirectCollaboratorsViewPart.viewer!=null) DirectCollaboratorsViewPart.viewer.refresh();
 		    	}
 		    
 		System.out.println("Going to sleep!!!!!!!!!!!!!!!!!!!!!!!!!");
