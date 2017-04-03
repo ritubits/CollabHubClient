@@ -1,8 +1,6 @@
 package collabhubclient.commands;
 
 import java.io.FileNotFoundException;
-import java.util.TimerTask;
-import java.util.Date;
 import java.util.Vector;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -47,7 +45,7 @@ public class ScheduledUITask extends Job {
 	IWorkbenchPage activePage = null;
 	private UIJob activityMethodDataJob;
 	private UIJob activityLineDataJob;
-	private static final int RESCHEDULE_TIME = 60 * 1000 * 1;//every minute
+	private static final int RESCHEDULE_TIME = 30 * 1000 * 1;//every 30 seconds
 	private boolean running = true;
 
 	public ScheduledUITask(CollabUserActivityClient uClient,
@@ -97,11 +95,10 @@ public class ScheduledUITask extends Job {
 						System.out.println("compilable:: " + compilable);
 					if (compilable)
 						sendCurrentArtifact(getCurrentFileName());
-					// Thread.sleep(1000*30);// pick activity data info every 60
-					// second
+
 				}
 
-				Thread.sleep(1000 * 20);// pick activity data info every 20
+			//	Thread.sleep(1000 * 20);// pick activity data info every 20
 										// second
 
 
@@ -138,8 +135,8 @@ public class ScheduledUITask extends Job {
 					"Obtaining Line Data") {
 				@Override
 				public IStatus runInUIThread(IProgressMonitor monitor) {
-
 					lineNo = getCursorPosition();
+
 					if (StartCollaborationClient.httpclient != null)
 						return Status.OK_STATUS;
 					else
@@ -163,6 +160,7 @@ public class ScheduledUITask extends Job {
 						System.out.println("in runInUIThread");
 					// System.out.println("Cursor::"+ getCursorPosition());
 					methodName = getCurrentMethod();
+							
 					if (DEBUG)
 						System.out
 								.println("MethodName in activityMethodNameData:: "
@@ -251,13 +249,6 @@ public class ScheduledUITask extends Job {
 				IDocument document = provider.getDocument(editor
 						.getEditorInput());
 				int line = textSelection.getStartLine() + 1;
-				// int column =0;
-				// try {
-				// column = textSelection.getOffset() -
-				// document.getLineOffset(line);
-				// } catch (Exception e) {
-				// e.printStackTrace();
-				// }
 				return line;
 			}
 		}
@@ -372,4 +363,6 @@ public class ScheduledUITask extends Job {
 	public void disableRunning() {
 		running = false;
 	}
+	
+
 }

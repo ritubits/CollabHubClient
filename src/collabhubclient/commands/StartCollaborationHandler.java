@@ -45,6 +45,7 @@ import collabhubclient.StartCollaborationClient;
 import collabhubclient.StartCollaborationForm;
 
 
+
 public class StartCollaborationHandler implements IHandler {
 
 	boolean DEBUG= true;
@@ -94,11 +95,16 @@ public class StartCollaborationHandler implements IHandler {
 		String collabName=Activator.getDefault().getPreferenceStore().getString("collabName");
 		String tomcatIP=Activator.getDefault().getPreferenceStore().getString("tomcatIP");
 		String mySQLIP=Activator.getDefault().getPreferenceStore().getString("mySQLIP");
+		String simulationMode=Activator.getDefault().getPreferenceStore().getString("simulationMode");
+		String simulationPath=Activator.getDefault().getPreferenceStore().getString("simulationPath");
+		
 		  
 		System.out.println(projectName);
 		System.out.println(collabName);
 		System.out.println(tomcatIP);
 		System.out.println(mySQLIP);
+		System.out.println(simulationMode);
+		System.out.println(simulationPath);
 		
 		if (projectName.equals("null") || collabName.equals("null"))
 		{
@@ -129,29 +135,7 @@ public class StartCollaborationHandler implements IHandler {
 			}
 		
 		
-
-
-		
-	//	StartCollaborationForm eForm= new StartCollaborationForm();
-	//	success= eForm.executeForm();
-	//	if (DEBUG) System.out.println("In StartCollaboration handler");
-		
-	//	if (DEBUG) System.out.println("Before collabStarted in Handlers:: "+success);
-		
-	/*	while (!success)
-		{
-			success = eForm.getCollabStatus();
-			if (DEBUG) System.out.println("collabStarted in Handlers:: "+success);
-		}*/
-		
-		//		reaches here when collabStarted
-	/*	try {
-			PlatformUI.getWorkbench().getDecoratorManager().setEnabled("DecorationProject.myDecorator", true);
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-
+	
 		  
 		workbench = PlatformUI.getWorkbench();
 
@@ -161,37 +145,11 @@ public class StartCollaborationHandler implements IHandler {
 		argmaps.put("activepage", activePage);
 		argmaps.put("workbench", workbench);
 		argmaps.put("client", userClient);
+		argmaps.put("simulationMode", simulationMode);
+		argmaps.put("simulationPath", simulationPath);
 		provider.getBroker().post(CollabEventsConstants.COLLAB_TOPIC_START, argmaps);
 
-	//	Timer time = new Timer(); // Instantiate Timer Object
-	///	ScheduledUITask st = new ScheduledUITask(userClient, activePage); // Instantiate SheduledTask class
-	//	time.schedule(st, 0, 1000*60*1); // Create Repetitively task for every 1 secs
-		
-		/*  Job job = new Job("Activity Job") {
 	
-		      protected IStatus run(IProgressMonitor monitor) {
-		        getUserActivityData();
-		        try {
-		        	Thread.sleep(1000*60*1);//1 minutes 
-
-		        	} catch (InterruptedException e) {
-		        		e.printStackTrace();
-		        	} 
-		      //  syncUI();
-		       
-				if ((StartCollaborationClient.httpclient != null) && (!monitor.isCanceled()))
-					return Status.OK_STATUS;
-				else 
-					return Status.CANCEL_STATUS;
-		      }
-
-		    };*/
-		   // job.setUser(true);
-		  //  job.schedule();
-		
-		//set the content of the eclipse IDE for simulation
-		setCurrentWorkSpaceContent();
-		
 		}catch (Exception ex)
 		{
 			if (DEBUG) System.out.println("Error calling collabClient");
@@ -202,27 +160,7 @@ public class StartCollaborationHandler implements IHandler {
 				return null;
 	}
 
-	public void setCurrentWorkSpaceContent()
-	{
-	
-		IAdaptable editorPart = null;
 
-		IEditorPart activeEditor = activePage.getActiveEditor();
-
-		if (activeEditor instanceof JavaEditor) {
-			ITextEditor editor = (ITextEditor) activeEditor
-					.getAdapter(ITextEditor.class);
-
-			if (editor != null) {
-				IDocumentProvider provider = editor.getDocumentProvider();
-				IDocument document = provider.getDocument(editor
-						.getEditorInput());
-				document.set("New file Content");
-				if (DEBUG)
-					System.out.println("file Content::" + document.get());
-			}
-		}
-	}
 	
 	  private void getUserActivityData() {
 		  
@@ -505,5 +443,28 @@ public String getCurrentMethod()
 
 	}
 
+	
+	private class ContentSimulationThread extends Thread{
+		
+		 public void run(){  
+			 
+			 while (true)
+			 {
+				
+			 try {
+			  			
+				Thread.sleep(1000*60*2);//2 minutes
+				//setCurrentWorkSpaceContent();
+				
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 
+		 }
+		 }
+		 
+
+	}
 		
 }

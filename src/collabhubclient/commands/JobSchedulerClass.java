@@ -15,6 +15,7 @@ import collabhubclient.CollabUserActivityClient;
 public class JobSchedulerClass implements EventHandler {
 
 	private ScheduledUITask task;
+	private ScheduledSimulationUIJob simTask;
 
 	public JobSchedulerClass() {
 		IEventBroker broker = new BrokerProvider().getBroker();
@@ -42,9 +43,29 @@ public class JobSchedulerClass implements EventHandler {
 
 			task.enableRunning();
 			task.schedule();
+
+			String simulationMode = (String) arg0.getProperty("simulationMode");
+			String simulationPath = (String) arg0.getProperty("simulationPath");
+			
+			if (simulationMode.equalsIgnoreCase("Y"))
+				{
+					if (simTask == null) {
+				
+						CollabUserActivityClient userClient = (CollabUserActivityClient) arg0.getProperty("client");
+						IWorkbench workbench = (IWorkbench) arg0.getProperty("workbench");
+						IWorkbenchPage activePage = workbench.getActiveWorkbenchWindow().getActivePage();
+						simTask = new ScheduledSimulationUIJob(userClient, activePage, simulationPath);
+						System.out.println("scheduling simulation");
+					}
+			
+					simTask.enableRunning();
+					simTask.schedule();
+				}
+			
 		} else if (CollabEventsConstants.COLLAB_TOPIC_CLOSE.equals(topic)) {
 			// handle close.
 			task.disableRunning();
+			simTask.disableRunning();
 		}
 	}
 

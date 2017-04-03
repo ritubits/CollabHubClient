@@ -15,7 +15,9 @@ public class StartCollabPreferencePage extends FieldEditorPreferencePage impleme
 		addField(new StringFieldEditor("collabName","Enter Collaborator Name:",getFieldEditorParent()));
 		addField(new StringFieldEditor("tomcatIP","Enter Tomcat IP address:",getFieldEditorParent()));
 		addField(new StringFieldEditor("mySQLIP","Enter MySQL IP address:",getFieldEditorParent()));
-	}
+		addField(new StringFieldEditor("simulationMode","Simulation Mode (Y/N):",getFieldEditorParent()));
+		addField(new StringFieldEditor("simulationPath","Simulation Path:",getFieldEditorParent()));
+		}
 	
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());

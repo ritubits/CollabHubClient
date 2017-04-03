@@ -67,11 +67,16 @@ public class Activator extends AbstractUIPlugin {
 			  String ownerName="null";//"Owner Name";
 			  String tomcatIP="localhost:8080";
 			  String mySQLIP="localhost:3306";
+			  String simulationMode="N";
+			  String simulationPath="D:\\COGsimulation";
+			  
 			  getPreferenceStore().setValue("projectName",projectName);
 			  getPreferenceStore().setValue("collabName",collabName);
 			  getPreferenceStore().setValue("ownerName",ownerName);
 			  getPreferenceStore().setValue("tomcatIP",tomcatIP);
 			  getPreferenceStore().setValue("mySQLIP",mySQLIP);
+			  getPreferenceStore().setValue("simulationMode",simulationMode);
+			  getPreferenceStore().setValue("simulationPath",simulationPath);
 			  
 	}
 
