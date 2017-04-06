@@ -1,12 +1,27 @@
 package collabhubclient.commands;
 
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+
 import java.io.FileNotFoundException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Vector;
 
+import org.eclipse.ui.ide.IDE;
+
 import javax.swing.JOptionPane;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
@@ -29,8 +44,10 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
@@ -157,10 +174,105 @@ public class StartCollaborationHandler implements IHandler {
 			ex.printStackTrace();
 		}
 		}
+		
+		//test live preview
+		try{
+			boolean status= false;
+			if (collabClient!=null) 
+				{
+				status= LivePreviewFunction(collabClient);
+				if (status== true) OpenNewIDE("DevR");
+				}
+		}catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 				return null;
 	}
 
+	public void OpenNewIDE(String collabName)
+	{
+		 
+		if (activePage != null) {
+	        IEditorPart editor = activePage.getActiveEditor();
+	        if (editor != null) {
+	            IEditorInput input = editor.getEditorInput();
+	            if (input instanceof IFileEditorInput) {
+	            	
+	            	File file = new File("/temp/"+collabName+"_artifact.txt");
+	                IFileStore fileStore = EFS.getLocalFileSystem().getStore(file.toURI());
+          try {
+              IDE.openEditorOnFileStore(activePage, fileStore);
+          } catch (Exception e) {
+              // TODO error handling
+          }
+	     }
+	     }
+		}
+	}
 
+
+	public boolean LivePreviewFunction( StartCollaborationClient collabClient) throws Exception
+	{
+		//invoke Servlet
+		
+		CloseableHttpClient httpclient= StartCollaborationClient.httpclient;
+		HttpGet httpget = new HttpGet("http://"+"localhost:8080"+"/collabserver/LivePreviewServlet?&cName="+"DevR");
+    	if (DEBUG) System.out.println("Invoking Servlet:: "+"http://"+"localhost:8080"+"/collabserver/LivePreviewServlet?&cName="+"DevR");
+    	CloseableHttpResponse response = httpclient.execute(httpget);
+    	  		
+    	if (DEBUG) 
+    		{
+    		System.out.println(response.getProtocolVersion());
+    		System.out.println(response.getStatusLine().getStatusCode());
+	    	System.out.println(response.getStatusLine().getReasonPhrase());
+    		}
+    	
+    	String status= response.getStatusLine().toString();
+    	if (DEBUG) System.out.println("CollabUserActivityClient "+response.getStatusLine().toString());
+    	HttpEntity entity= response.getEntity();
+
+        response.close();
+        
+    	Vector projectVector = new Vector();
+		  
+	    	if (entity != null) {
+	    		long len = entity.getContentLength();
+	    		if (len != -1 && len < 2048) {
+	    		projectVector.add(EntityUtils.toString(entity));
+	    		
+	    		} else {
+	    		// Stream content out
+	    			if (DEBUG) System.out.println("Received empty string from server");
+	    		}
+	    	}
+	    	
+	    	Enumeration enumVect = projectVector.elements();
+	    	while (enumVect.hasMoreElements())
+	    	{
+	    		String fileContent= (String) enumVect.nextElement();
+	    		if (DEBUG) System.out.println("From LivePreview servlet: "+fileContent);
+	    		//write to file at temp/collabName_artifact.java
+	    		
+	    		 try {
+	    	            FileWriter writer = new FileWriter("/temp/"+"DevR"+"_artifact.txt", false);
+	    	            writer.write(fileContent);
+	    	            
+	    	            writer.close();
+	    	        } catch (IOException e) {
+	    	            e.printStackTrace();
+	    	        }
+	    		
+	    	}
+	    	
+	    	
+	    	
+    	//check if returned status is not correct
+    	if (status.contains("Error")) return false; 
+    	else    	
+    	return true;
+	}
 	
 	  private void getUserActivityData() {
 		  

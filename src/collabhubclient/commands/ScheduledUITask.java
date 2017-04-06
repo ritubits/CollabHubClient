@@ -244,11 +244,13 @@ public class ScheduledUITask extends Job {
 			ISelection selection = selectionProvider.getSelection();
 			if (selection instanceof ITextSelection) {
 				ITextSelection textSelection = (ITextSelection) selection;
-				IDocumentProvider provider = ((ITextEditor) editor)
-						.getDocumentProvider();
-				IDocument document = provider.getDocument(editor
-						.getEditorInput());
+				IDocumentProvider provider = ((ITextEditor) editor).getDocumentProvider();
+				IDocument document = provider.getDocument(editor.getEditorInput());
 				int line = textSelection.getStartLine() + 1;
+				//int offset = textSelection.getOffset();
+				//int lineNumber = document.getLineOfOffset(offset);
+				//document.
+				//((ITextEditor) editor).selectAndReveal(0,0);
 				return line;
 			}
 		}

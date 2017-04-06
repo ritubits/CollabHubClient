@@ -64,8 +64,8 @@ public class JobSchedulerClass implements EventHandler {
 			
 		} else if (CollabEventsConstants.COLLAB_TOPIC_CLOSE.equals(topic)) {
 			// handle close.
-			task.disableRunning();
-			simTask.disableRunning();
+			if (task != null)  task.disableRunning();
+			if (simTask != null)  simTask.disableRunning();
 		}
 	}
 
