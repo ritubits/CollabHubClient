@@ -24,7 +24,7 @@ public class OpenIndirectCollaboratorsViewPart  extends ViewPart{
 	@Override
 	public void createPartControl(Composite parent) {
 
-		 viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
+		 viewer = new TableViewer(parent, SWT.SINGLE | SWT.H_SCROLL
 			        | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		 
 		 final Table table = viewer.getTable();
@@ -138,7 +138,7 @@ public class OpenIndirectCollaboratorsViewPart  extends ViewPart{
 			        if (index != -1) s= s.substring(index+1, s.length());
 			        index= s.indexOf(",");
 			        if (index != -1) s= s.substring(index+1, s.length());
-			        index= s.indexOf(",");
+			        index= s.indexOf("|");
 			        if (index != -1) s= s.substring(0, index);
 			        return (s);
 		      }

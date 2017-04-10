@@ -133,9 +133,9 @@ public class IndirectCollaboratorsViewPart  extends ViewPart{
 		      @Override
 		      public String getText(Object element) {
 		    	  String s = (String) element;
-		    	  if (s.contains("null"))
+		    	  if (s.contains("null")|| (s==null))
 		    	  {
-		    		  return "null";
+		    		  return "---";
 		    	  }
 		    	  if (s.contains("No Collaborators"))
 		    	  {

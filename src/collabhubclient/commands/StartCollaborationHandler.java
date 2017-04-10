@@ -176,7 +176,7 @@ public class StartCollaborationHandler implements IHandler {
 		}
 		
 		//test live preview
-		try{
+	/*	try{
 			boolean status= false;
 			if (collabClient!=null) 
 				{
@@ -186,7 +186,7 @@ public class StartCollaborationHandler implements IHandler {
 		}catch (Exception e)
 		{
 			e.printStackTrace();
-		}
+		}*/
 		
 				return null;
 	}

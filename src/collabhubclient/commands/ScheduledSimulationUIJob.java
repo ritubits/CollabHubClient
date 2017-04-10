@@ -20,7 +20,9 @@ import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -143,6 +145,23 @@ public class ScheduledSimulationUIJob extends Job {
 				IDocument document = provider.getDocument(editor
 						.getEditorInput());
 				document.set(readFileContent());
+				//editor.selectAndReveal(6, 0);
+			//	activePage.activate(editor);
+				
+				IRegion lineInfo = null;
+				int lineNumber=7;
+				  try {
+				  // line count internaly starts with 0, and not with 1 like in
+				  // GUI
+				   lineInfo = document.getLineInformation(lineNumber - 1);
+				 } catch (BadLocationException e) {
+				  // ignored because line number may not really exist in document,
+				  // we guess this...
+				 }
+				  if (lineInfo != null) {
+				  editor.selectAndReveal(lineInfo.getOffset(), lineInfo.getLength());
+				   }
+				  
 				if (DEBUG)
 					System.out.println("file Content::" + document.get());
 			}
