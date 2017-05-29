@@ -69,6 +69,8 @@ public class Activator extends AbstractUIPlugin {
 			  String mySQLIP="localhost:3306";
 			  String simulationMode="N";
 			  String simulationPath="D:\\COGsimulation";
+			  String levelNumber="levelN";
+			  int collabNumber=10;
 			  
 			  getPreferenceStore().setValue("projectName",projectName);
 			  getPreferenceStore().setValue("collabName",collabName);
@@ -77,6 +79,8 @@ public class Activator extends AbstractUIPlugin {
 			  getPreferenceStore().setValue("mySQLIP",mySQLIP);
 			  getPreferenceStore().setValue("simulationMode",simulationMode);
 			  getPreferenceStore().setValue("simulationPath",simulationPath);
+			  getPreferenceStore().setValue("levelNumber",levelNumber);
+			  getPreferenceStore().setValue("collabNumber",collabNumber);
 			  
 	}
 

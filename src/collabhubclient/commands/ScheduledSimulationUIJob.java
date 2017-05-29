@@ -149,17 +149,20 @@ public class ScheduledSimulationUIJob extends Job {
 			//	activePage.activate(editor);
 				
 				IRegion lineInfo = null;
-				int lineNumber=7;
+				int lineNumber= Integer.parseInt(getLineNumberFromFile());// set to a random value between 1 and fileLength
 				  try {
 				  // line count internaly starts with 0, and not with 1 like in
 				  // GUI
-				   lineInfo = document.getLineInformation(lineNumber - 1);
+				   if (lineNumber==0) lineNumber=1; 
+				lineInfo = document.getLineInformation(lineNumber - 1);
+				   
 				 } catch (BadLocationException e) {
 				  // ignored because line number may not really exist in document,
 				  // we guess this...
 				 }
 				  if (lineInfo != null) {
-				  editor.selectAndReveal(lineInfo.getOffset(), lineInfo.getLength());
+				//  editor.selectAndReveal(lineInfo.getOffset(), lineInfo.getLength());//set to 0
+				  editor.selectAndReveal(lineInfo.getOffset(), 0);//set to 0
 				   }
 				  
 				if (DEBUG)
@@ -209,6 +212,52 @@ public class ScheduledSimulationUIJob extends Job {
 
 			}
 		}
+		return content;
+	}
+	
+	public String getLineNumberFromFile()
+	{
+		String content= null;
+		System.out.println("Reading content from line No "+fileNo+" file");
+		BufferedReader br = null;
+		FileReader fr = null;
+		String fileName=simPath+"/Line"+fileNo+".txt";
+		System.out.println("Reading from file:: "+fileName);
+		try {
+
+			fr = new FileReader(fileName);
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+	        StringBuilder outBuilder = new StringBuilder();
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	        	outBuilder.append(line);
+	        	//outBuilder.append('\n');
+	        }
+	        reader.close();
+	        content= outBuilder.toString();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			try {
+
+				if (br != null)
+					br.close();
+
+				if (fr != null)
+					fr.close();
+
+			} catch (IOException ex) {
+
+				ex.printStackTrace();
+
+			}
+		}
+		
+		if (content == null) content="0";
+		System.out.println("Line Number Content::"+content);
 		return content;
 	}
 }

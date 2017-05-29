@@ -133,38 +133,62 @@ public class StartCollaborationHandler implements IHandler {
 
 		
 		try {
+					
 			collabClient= new StartCollaborationClient();
 			collabClient.setConfigProjectValues(projectName, collabName,tomcatIP,mySQLIP);
 			
 			boolean done = collabClient.createCollabClient();
+			boolean status= false;
+			boolean validCollab = false;
 			// if client created
 			if (done)
 			{
-				boolean status= collabClient.updateUserTable();
-				if (status)
+				//check here for allowed number of clients
+				
+				//if valid then move ahead
+				validCollab= collabClient.getAllowedCollaborators();
+				System.out.println("Valid::"+validCollab);
+				if (validCollab)
 				{
-					regProjectName = projectName;
-					JOptionPane.showMessageDialog(null, "Successfully Connected to CollabHub", "Message Info", JOptionPane.INFORMATION_MESSAGE);
-					
+					status= collabClient.updateUserTable();
+					if (status)
+					{
+						regProjectName = projectName;
+						JOptionPane.showMessageDialog(null, "Successfully Connected to CollabHub", "Message Info", JOptionPane.INFORMATION_MESSAGE);
+						
+					}
+					else 
+					{
+						//close collabClient
+						collabClient.closeClient();
+						JOptionPane.showMessageDialog(null, "Unable to connect to CollabHub", "Message Info", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}//validCollab
+				else
+				{
+					//close collabClient
+					collabClient.closeClient();
+					JOptionPane.showMessageDialog(null, "You cannot join for collaboration: Allowable limit over", "Message Info", JOptionPane.INFORMATION_MESSAGE);
 				}
-				else 
-					JOptionPane.showMessageDialog(null, "Unable to connect to CollabHub", "Message Info", JOptionPane.INFORMATION_MESSAGE);
-			}
+			}//if done
 		
 		
 	
 		  
-		workbench = PlatformUI.getWorkbench();
-
-		activePage = workbench.getActiveWorkbenchWindow().getActivePage();
-		userClient = new CollabUserActivityClient();
-		HashMap<String, Object> argmaps = new HashMap<>();
-		argmaps.put("activepage", activePage);
-		argmaps.put("workbench", workbench);
-		argmaps.put("client", userClient);
-		argmaps.put("simulationMode", simulationMode);
-		argmaps.put("simulationPath", simulationPath);
-		provider.getBroker().post(CollabEventsConstants.COLLAB_TOPIC_START, argmaps);
+			if (done && validCollab && status)
+			{
+				workbench = PlatformUI.getWorkbench();
+		
+				activePage = workbench.getActiveWorkbenchWindow().getActivePage();
+				userClient = new CollabUserActivityClient();
+				HashMap<String, Object> argmaps = new HashMap<>();
+				argmaps.put("activepage", activePage);
+				argmaps.put("workbench", workbench);
+				argmaps.put("client", userClient);
+				argmaps.put("simulationMode", simulationMode);
+				argmaps.put("simulationPath", simulationPath);
+				provider.getBroker().post(CollabEventsConstants.COLLAB_TOPIC_START, argmaps);
+			}
 
 	
 		}catch (Exception ex)

@@ -46,9 +46,9 @@ public enum IndirectCollaboratorModelProvider {
 	//invoke servlet //pass the collabName
 	  HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/EInCServlet?cName="+collabName);
   	
-  	CloseableHttpResponse response;
+  	CloseableHttpResponse response=null;
 	try {
-		response = collabClient.execute(httpget);
+		if (collabClient!=null) { response = collabClient.execute(httpget);}
 	  		
 	System.out.println(response.getProtocolVersion());
 	System.out.println(response.getStatusLine().getStatusCode());

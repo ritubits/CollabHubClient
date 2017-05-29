@@ -4,12 +4,15 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Vector;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 public class StartCollaborationClient {
 	
@@ -148,17 +151,62 @@ public class StartCollaborationClient {
 		    	{
 		    		System.out.println("From servlet: "+enumVect.nextElement());
 		    	}
-		    	
+		    	*/
 	    	//check if returned status is not correct
 	    	if (status.contains("Error")) return false; 
 	    	else    	
-	    	return true;*/
-	    	
 	    	return true;
+	    	
 	 
 	    }
 	
-/*	public void closeClient() throws Exception
+	public boolean getAllowedCollaborators() throws IOException
+	{
+		boolean done= false;
+		     
+			System.out.println("http://"+ipAddTomcat+"/collabserver/AllowedCollaboratorServlet?pName="+projectName+"&cName="+collabName);
+	    	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/AllowedCollaboratorServlet?pName="+projectName+"&cName="+collabName);
+	    	
+	    	CloseableHttpResponse response = httpclient.execute(httpget);
+	    	  		
+	    	if (DEBUG) System.out.println(response.getProtocolVersion());
+	    	if (DEBUG) System.out.println(response.getStatusLine().getStatusCode());
+	    	if (DEBUG) System.out.println(response.getStatusLine().getReasonPhrase());
+	    	String status= response.getStatusLine().toString();
+	    	if (DEBUG) System.out.println("StartCollaborationClient "+response.getStatusLine().toString());
+	    	entity= response.getEntity();
+	    	
+	        
+	    	Vector projectVector = new Vector();
+ 		  
+		    	if (entity != null) {
+		    		long len = entity.getContentLength();
+		    		if (len != -1 && len < 2048) {
+		    		projectVector.add(EntityUtils.toString(entity));
+		    		
+		    		} else {
+		    		// Stream content out
+		    			System.out.println("Received empty string from server");
+		    		}
+		    	}
+		    	
+		    	Enumeration enumVect = projectVector.elements();
+		    	String allowed= "false";
+		    	while (enumVect.hasMoreElements())
+		    	{
+		    		allowed= (String) enumVect.nextElement();
+		    		System.out.println("From servlet: "+allowed);
+		    		if (allowed.equalsIgnoreCase("true")) done= true; 
+		    	}
+		    	
+	    	//check if returned status is not correct
+	    	if (status.contains("Error")) done=false;
+	    	response.close();
+	    		    	
+		return done;
+	}
+	
+public void closeClient() throws Exception
 	{
 		try
 		{
@@ -169,5 +217,5 @@ public class StartCollaborationClient {
 			e.printStackTrace();
 		}
 	}
-*/
+
 }

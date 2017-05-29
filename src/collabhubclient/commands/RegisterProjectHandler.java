@@ -44,11 +44,15 @@ public class RegisterProjectHandler implements IHandler {
 		String ownerName=Activator.getDefault().getPreferenceStore().getString("ownerName");
 		String tomcatIP=Activator.getDefault().getPreferenceStore().getString("tomcatIP");
 		String mySQLIP=Activator.getDefault().getPreferenceStore().getString("mySQLIP");
-		  
+		String levelNumber=Activator.getDefault().getPreferenceStore().getString("levelNumber");
+		String collabNumber=Activator.getDefault().getPreferenceStore().getString("collabNumber");
+		
 		System.out.println(projectName);
 		System.out.println(ownerName);
 		System.out.println(tomcatIP);
 		System.out.println(mySQLIP);
+		System.out.println(levelNumber);
+		System.out.println(collabNumber);
 		
 		if (projectName.equals("null") || ownerName.equals("null"))
 		{
@@ -60,7 +64,7 @@ public class RegisterProjectHandler implements IHandler {
 		
 		regObject= new RegProjectClient();
 		try {
-			regObject.setConfigProjectValues(projectName, ownerName, tomcatIP, mySQLIP);
+			regObject.setConfigProjectValues(projectName, ownerName, tomcatIP, mySQLIP, levelNumber, collabNumber);
 			boolean status= regObject.executeClient();
 			if (status)
 			{

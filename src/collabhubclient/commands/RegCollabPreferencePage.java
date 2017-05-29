@@ -1,6 +1,7 @@
 package collabhubclient.commands;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -14,7 +15,10 @@ public class RegCollabPreferencePage extends FieldEditorPreferencePage implement
 		addField(new StringFieldEditor("projectName","Enter Project Name:",getFieldEditorParent()));
 		addField(new StringFieldEditor("ownerName","Enter Owner Name:",getFieldEditorParent()));
 		addField(new StringFieldEditor("tomcatIP","Enter Tomcat IP address:",getFieldEditorParent()));
+		//addField(new ListEditor("levelNumber", "Specify Level Number:", getFieldEditorParent()));
 		addField(new StringFieldEditor("mySQLIP","Enter MySQL IP address:",getFieldEditorParent()));
+		addField(new StringFieldEditor("levelNumber","Specify Level Number:",getFieldEditorParent()));
+		addField(new IntegerFieldEditor("collabNumber","Specify Number of Collaborators Allowed:",getFieldEditorParent()));
 	}
 	
 	public void init(IWorkbench workbench) {

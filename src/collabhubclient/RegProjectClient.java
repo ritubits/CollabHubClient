@@ -19,15 +19,19 @@ public class RegProjectClient {
 	String ownerName;
 	String ipAddTomcat;
 	String ipAddMySQL;
+	String levelNumber;
+	String collabNumber;
 	CloseableHttpClient httpclient;
 
 
-	public void setConfigProjectValues(String pName, String oName, String ipT, String ipSQL )
+	public void setConfigProjectValues(String pName, String oName, String ipT, String ipSQL, String levelNo, String collabNo )
 	{
 		projectName = pName;
 		ownerName= oName;
 		ipAddTomcat = ipT;
 		ipAddMySQL= ipSQL;
+		levelNumber = levelNo;
+		collabNumber= collabNo;
 	}
 		    
 	public boolean executeClient() throws Exception {
@@ -38,7 +42,7 @@ public class RegProjectClient {
 	  	if (DEBUG) System.out.println("After creating client: regProject");
 	    
 	  	if (DEBUG)  System.out.println("Invoking Servlet RegisterProject"+"http://"+ipAddTomcat+"/collabserver/RegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
-	       	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/RegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
+	       	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/RegisterProjectServlet?pName="+projectName+"&oName="+ownerName+"&levelNumber="+levelNumber+"&collabNumber="+collabNumber);
 	    	
 	    	CloseableHttpResponse response = httpclient.execute(httpget);
 	    	  		
