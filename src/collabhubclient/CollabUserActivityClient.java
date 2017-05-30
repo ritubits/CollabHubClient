@@ -110,7 +110,7 @@ public class CollabUserActivityClient {
 	//	File file = new File("D://CloneRemoteRepo.java");
       //  File file= new File(fileContent);
         System.out.println("FileContent:::"+fileContent);
-        String response = executeMultiPartRequest("http://localhost:8080/collabserver/UserArtifactGraphServlet", file, fileName, "File Upload") ;
+        String response = executeMultiPartRequest("http://"+ipAddT+"/collabserver/UserArtifactGraphServlet", file, fileName, "File Upload") ;
         System.out.println("Response : "+response+ "from client: "+collabName);
         
         return true;
