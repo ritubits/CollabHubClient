@@ -1,12 +1,8 @@
 package collabhubclient.commands;
 
-import java.util.Map;
-
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
@@ -25,7 +21,7 @@ public class JobSchedulerClass implements EventHandler {
 
 	@Override
 	public void handleEvent(Event arg0) {
-		// TODO Auto-generated method stub
+
 		// text1 is a SWT Text field
 		// text1.setText(String.valueOf(i));
 		System.out.println("In JobSchedukerClass" + arg0);
@@ -37,7 +33,8 @@ public class JobSchedulerClass implements EventHandler {
 						.getProperty("client");
 				IWorkbench workbench = (IWorkbench) arg0
 						.getProperty("workbench");
-				 IWorkbenchPage activePage = workbench.getActiveWorkbenchWindow().getActivePage();
+				IWorkbenchPage activePage = workbench
+						.getActiveWorkbenchWindow().getActivePage();
 				task = new ScheduledUITask(userClient, activePage);
 			}
 
@@ -46,26 +43,31 @@ public class JobSchedulerClass implements EventHandler {
 
 			String simulationMode = (String) arg0.getProperty("simulationMode");
 			String simulationPath = (String) arg0.getProperty("simulationPath");
-			
-			if (simulationMode.equalsIgnoreCase("Y"))
-				{
-					if (simTask == null) {
-				
-						CollabUserActivityClient userClient = (CollabUserActivityClient) arg0.getProperty("client");
-						IWorkbench workbench = (IWorkbench) arg0.getProperty("workbench");
-						IWorkbenchPage activePage = workbench.getActiveWorkbenchWindow().getActivePage();
-						simTask = new ScheduledSimulationUIJob(userClient, activePage, simulationPath);
-						System.out.println("scheduling simulation");
-					}
-			
-					simTask.enableRunning();
-					simTask.schedule();
+
+			if (simulationMode.equalsIgnoreCase("Y")) {
+				if (simTask == null) {
+
+					CollabUserActivityClient userClient = (CollabUserActivityClient) arg0
+							.getProperty("client");
+					IWorkbench workbench = (IWorkbench) arg0
+							.getProperty("workbench");
+					IWorkbenchPage activePage = workbench
+							.getActiveWorkbenchWindow().getActivePage();
+					simTask = new ScheduledSimulationUIJob(userClient,
+							activePage, simulationPath);
+					System.out.println("scheduling simulation");
 				}
-			
+
+				simTask.enableRunning();
+				simTask.schedule();
+			}
+
 		} else if (CollabEventsConstants.COLLAB_TOPIC_CLOSE.equals(topic)) {
 			// handle close.
-			if (task != null)  task.disableRunning();
-			if (simTask != null)  simTask.disableRunning();
+			if (task != null)
+				task.disableRunning();
+			if (simTask != null)
+				simTask.disableRunning();
 		}
 	}
 

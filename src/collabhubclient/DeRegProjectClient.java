@@ -6,65 +6,69 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-
 public class DeRegProjectClient {
-	
-	boolean DEBUG= false;
-	HttpEntity entity=null;
-	
+
+	boolean DEBUG = false;
+	HttpEntity entity = null;
+
 	String projectName;
 	String ownerName;
 	String ipAddTomcat;
 	String ipAddMySQL;
 	CloseableHttpClient httpclient;
 
-
-	public void setConfigProjectValues(String pName, String oName, String ipT, String ipSQL )
-	{
+	public void setConfigProjectValues(String pName, String oName, String ipT,
+			String ipSQL) {
 		projectName = pName;
-		ownerName= oName;
+		ownerName = oName;
 		ipAddTomcat = ipT;
-		ipAddMySQL= ipSQL;
+		ipAddMySQL = ipSQL;
 	}
-		    
+
 	public boolean executeClient() throws Exception {
-		
-		if (DEBUG) System.out.println("Before creating client: DeregProject");
-		
-	  	httpclient = HttpClients.createDefault();
-	  	if (DEBUG) System.out.println("After creating client: DeregProject");
-	    
-	  	if (DEBUG) System.out.println("Invoking Sevlet DeRegister"+"http://"+ipAddTomcat+"/collabserver/DeRegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
-	    	HttpGet httpget = new HttpGet("http://"+ipAddTomcat+"/collabserver/DeRegisterProjectServlet?pName="+projectName+"&oName="+ownerName);
-	    	
-	    	CloseableHttpResponse response = httpclient.execute(httpget);
-	    	  		
-	    	if (DEBUG) 
-	    	{	
-	    	System.out.println(response.getProtocolVersion());
-	    	System.out.println(response.getStatusLine().getStatusCode());
-	    	System.out.println(response.getStatusLine().getReasonPhrase());
-	    	}
-	    	
-	    	String status= response.getStatusLine().toString();
-	    	if (DEBUG) System.out.println("DeregClient "+response.getStatusLine().toString());
-	    	
-	    	response.close();
-	    	//check if returned status is not correct
-	    	if (status.contains("Error")) return false; 
-	    	else    	
-	    	return true;
-	 
-	    }
-	
-	public void closeClient() throws Exception
-	{
-		try
-		{
-			httpclient.close();
+
+		if (DEBUG)
+			System.out.println("Before creating client: DeregProject");
+
+		httpclient = HttpClients.createDefault();
+		if (DEBUG)
+			System.out.println("After creating client: DeregProject");
+
+		if (DEBUG)
+			System.out.println("Invoking Sevlet DeRegister" + "http://"
+					+ ipAddTomcat
+					+ "/collabserver/DeRegisterProjectServlet?pName="
+					+ projectName + "&oName=" + ownerName);
+		HttpGet httpget = new HttpGet("http://" + ipAddTomcat
+				+ "/collabserver/DeRegisterProjectServlet?pName=" + projectName
+				+ "&oName=" + ownerName);
+
+		CloseableHttpResponse response = httpclient.execute(httpget);
+
+		if (DEBUG) {
+			System.out.println(response.getProtocolVersion());
+			System.out.println(response.getStatusLine().getStatusCode());
+			System.out.println(response.getStatusLine().getReasonPhrase());
 		}
-		catch (Exception e)
-		{
+
+		String status = response.getStatusLine().toString();
+		if (DEBUG)
+			System.out.println("DeregClient "
+					+ response.getStatusLine().toString());
+
+		response.close();
+		// check if returned status is not correct
+		if (status.contains("Error"))
+			return false;
+		else
+			return true;
+
+	}
+
+	public void closeClient() throws Exception {
+		try {
+			httpclient.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
